@@ -1,7 +1,7 @@
-export default function Home() {
+export default function ProneAreas() {
   return (
     <div className="flex items-center justify-center h-screen">
-      <h1>HOMEPAGE</h1>
+      <h1>PRONE AREAS</h1>
     </div>
   );
 }
