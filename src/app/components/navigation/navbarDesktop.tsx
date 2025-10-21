@@ -12,7 +12,11 @@ import SidebarMobile from "./sidebarMobile";
 export default function NavbarDesktop() {
   const pathname = usePathname();
 
-  const isOnMapPage = pathname.includes("/realtime-updates");
+  const isOnMapPage =
+    pathname.includes("/realtime-updates") ||
+    pathname.includes("evacuation-centers");
+
+  const isHomepage = pathname === "/";
 
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
@@ -40,9 +44,11 @@ export default function NavbarDesktop() {
 
   return (
     <div
-      className={`md:w-full w-max md:h-20 h-16   flex items-center  justify-between px-5  md:px-10 ${isOnMapPage ? "absolute top-0 z-50 bg-transparent md:backdrop-blur-md" : "bg-background"}`}
+      className={`md:w-full w-max md:h-20 h-16   flex items-center  justify-between px-5  md:px-10 ${isOnMapPage || isHomepage ? "absolute top-0 z-50 bg-transparent md:backdrop-blur-xs" : "bg-background"}`}
     >
-      <h1 className="text-dark-blue  hidden md:flex  font-extrabold  md:font-black text-lg md:text-xl text">
+      <h1
+        className={`${isHomepage ? "text-white" : "text-dark-blue"} hidden md:flex  font-extrabold  md:font-black text-lg md:text-xl text`}
+      >
         Disaster Ready
       </h1>
 
@@ -54,7 +60,11 @@ export default function NavbarDesktop() {
               <li key={navLink.path}>
                 <Link
                   href={navLink.path}
-                  className={`hover:text-dark-blue text-sm  ${isActive ? "text-dark-blue underline underline-offset-8" : ""}`}
+                  className={`text-sm
+    ${isHomepage ? "text-white hover:opacity-80" : " hover:text-dark-blue"} 
+    ${isOnMapPage && "text-black"} 
+    ${isActive ? "text-dark-blue underline underline-offset-8" : ""}
+  `}
                 >
                   {navLink.link}
                 </Link>
@@ -72,7 +82,7 @@ export default function NavbarDesktop() {
         </ul>
         <FiMenu
           onClick={() => setIsSideBarOpen(true)}
-          className={`text-2xl lg:hidden cursor-pointer ${isOnMapPage ? "text-black" : "text-dark-blue"}`}
+          className={`text-2xl lg:hidden cursor-pointer ${isOnMapPage ? "text-black" : "text-dark-blue"} ${isHomepage && "text-white"}`}
         />
       </nav>
 

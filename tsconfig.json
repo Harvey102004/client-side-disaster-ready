@@ -13,6 +13,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "types": ["leaflet", "./types/leaflet-routing-machine"],
     "plugins": [
       {
         "name": "next"

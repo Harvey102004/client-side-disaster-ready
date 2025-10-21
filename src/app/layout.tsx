@@ -24,7 +24,7 @@ export default function RootLayout({
             <NavbarDesktop />
             <NavMobile />
             {children}
-            <ConditionalFooter />{" "}
+            <ConditionalFooter />
           </ThemeProvider>
         </QueryProvider>
       </body>

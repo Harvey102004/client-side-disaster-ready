@@ -6,7 +6,11 @@ import Footer from "./Footer";
 export default function ConditionalFooter() {
   const pathname = usePathname();
 
-  const hideFooterRoutes = ["/realtime-updates"];
+  const hideFooterRoutes = [
+    "/realtime-updates",
+    "/evacuation-centers",
+    "/send-report",
+  ];
 
   if (hideFooterRoutes.includes(pathname)) {
     return null;
