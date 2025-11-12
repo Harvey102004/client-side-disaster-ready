@@ -59,7 +59,7 @@ export default function NavMobile() {
       <nav className="bg-dark-blue relative mx-auto flex h-14 w-[95%] items-center rounded-xl">
         {activeIndex !== null && activeIndex !== -1 && (
           <div
-            className="bg-light absolute -top-3 flex h-[55px] w-[55px] items-center justify-center rounded-full transition-all duration-300 ease-in-out"
+            className="bg-background absolute -top-3 flex h-[55px] w-[55px] items-center justify-center rounded-full transition-all duration-300 ease-in-out"
             style={{
               left: `calc(${(100 / navLinks.length) * activeIndex}% + ${
                 100 / navLinks.length / 2

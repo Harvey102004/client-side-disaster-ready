@@ -80,15 +80,15 @@ export default function RiskMappingMap() {
     (async () => {
       try {
         const res = await fetch(
-          "http://192.168.137.1/Disaster-backend/public/disasterMapping.php"
+          "http://localhost:3001/public/fetchDisasterMappingClient.php"
         );
         if (!res.ok) throw new Error("Failed to fetch markers");
 
         const result = await res.json();
 
-        if (result.success && Array.isArray(result.data)) {
+        if (Array.isArray(result)) {
           const fetchedMarkers = await Promise.all(
-            result.data.map(async (m: any) => {
+            result.map(async (m: any) => {
               let address = m.address;
               if (!address) {
                 address = await reverseGeocode(Number(m.lat), Number(m.lng));
@@ -108,7 +108,7 @@ export default function RiskMappingMap() {
           setMarkers([]);
         }
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching markers:", err);
       }
     })();
   }, []);
@@ -160,14 +160,14 @@ export default function RiskMappingMap() {
 
       {/*  MOBILE: Dropdown filter */}
 
-      <div className="absolute top-5 right-5 z-40 md:hidden flex flex-col items-end">
+      <div className="absolute top-5 right-4 z-40 md:hidden flex flex-col items-end">
         {/* Filter toggle button */}
         <button
           onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-          className="flex items-center gap-2 rounded-full  bg-white shadow-md px-3 py-2 text-xs text-gray-700 hover:bg-gray-100 transition"
+          className="flex items-center gap-2 rounded-full  bg-white shadow-md pl-3 pr-4 py-1.5 text-[11px] text-gray-700 hover:bg-gray-100 transition"
         >
           <LuFilter className="text-gray-600" />
-          <span className="font-medium">Filter</span>
+          <span className="font-medium ">Filter</span>
         </button>
 
         {/* Dropdown filters */}

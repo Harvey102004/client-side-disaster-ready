@@ -7,10 +7,10 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+} from "@/app/components/ui/dialog";
+import { Separator } from "@/app/components/ui/separator";
+import { Button } from "@/app/components/ui/button";
+import { Progress } from "@/app/components/ui/progress";
 import Image from "next/image";
 import { MapPin } from "lucide-react";
 
@@ -70,7 +70,7 @@ export const EvacDetailsModal = ({
     .replace(/[^\w-]/g, "");
 
   let logoFile = "default-logo.png";
-  if (/municipality\s+of\s+los\s*baños/i.test(createdBy)) {
+  if (/municipal\s+of\s+los\s*baños/i.test(createdBy)) {
     logoFile = "lb-logo.png";
   } else if (normalized) {
     logoFile = `${normalized}-logo.png`;

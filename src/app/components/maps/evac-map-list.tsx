@@ -23,6 +23,7 @@ import { BiCurrentLocation } from "react-icons/bi";
 import { IoClose } from "react-icons/io5";
 import { PiNewspaperFill } from "react-icons/pi";
 import { AiFillWarning } from "react-icons/ai";
+import axios from "axios";
 
 // ✅ Fix leaflet icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -108,31 +109,22 @@ export default function EvacuationListView({
 
     const fetchRisk = async () => {
       try {
-        const res = await fetch(
-          "http://192.168.137.1/Disaster-backend/public/disasterMapping.php"
+        const res = await axios.get(
+          "http://localhost:3001/public/fetchDisasterMappingClient.php"
         );
-        const json = await res.json();
-        console.log("Raw risk mapping data:", json);
 
-        const filtered = json.data.filter(
+        // res.data is already an array
+        const filtered = res.data.filter(
           (item: any) => item.type !== "Pharmacy" && item.type !== "Hospital"
         );
 
-        const markers = await Promise.all(
-          filtered.map(async (m: any) => {
-            let address = m.address;
-            if (!address) {
-              address = "";
-            }
-            return {
-              id: Number(m.id),
-              type: m.type,
-              lat: Number(m.lat),
-              lng: Number(m.lng),
-              address,
-            };
-          })
-        );
+        const markers = filtered.map((m: any) => ({
+          id: Number(m.id),
+          type: m.type,
+          lat: Number(m.lat),
+          lng: Number(m.lng),
+          address: m.address || "",
+        }));
 
         setRiskMarkers(markers);
       } catch (err) {

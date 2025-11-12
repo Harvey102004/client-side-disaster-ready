@@ -48,3 +48,41 @@ export interface GetEvacDetails {
   long?: string | number;
   onclick: () => void;
 }
+
+// UPDATE AND NEWS TYPES
+
+export interface TWeatherAdvisory {
+  id: number;
+  title: string;
+  details: string;
+  date_time: string;
+  added_by: string;
+}
+
+export interface TRoadAdvisory {
+  id: number;
+  title: string;
+  details: string;
+  date_time: string;
+  status: string;
+  added_by: string;
+}
+
+export interface TDisasterAdvisory {
+  id: number;
+  disaster_type: string;
+  title: string;
+  details: string;
+  date_time: string;
+  image_url: string;
+  added_by: string;
+  img_path?: string;
+}
+
+export interface TCommunity {
+  id: number;
+  title: string;
+  details: string;
+  date_time: string;
+  added_by: string;
+}

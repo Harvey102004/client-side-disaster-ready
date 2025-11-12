@@ -4,7 +4,8 @@ import { ThemeProvider } from "./components/theme-provider";
 import NavbarDesktop from "./components/navigation/navbarDesktop";
 import NavMobile from "./components/navigation/navMobile";
 import QueryProvider from "./components/QueryProvider";
-import ConditionalFooter from "./components/ConditionalFooter"; // ⬅️ new import
+import ConditionalFooter from "./components/ConditionalFooter";
+import { Toaster } from "sonner";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800", "900"],
@@ -21,6 +22,18 @@ export default function RootLayout({
       <body className={`${poppins.className} mb-20 md:mb-0 scrollBar`}>
         <QueryProvider>
           <ThemeProvider attribute="class" enableSystem defaultTheme="system">
+            <Toaster
+              position="top-center"
+              richColors
+              toastOptions={{
+                className: `${poppins.className} !w-max !absolute !left-[46%] !-translate-x-1/2 `,
+
+                classNames: {
+                  description: "text-nowrap",
+                  actionButton: "!bg-transparent !hover:none",
+                },
+              }}
+            />
             <NavbarDesktop />
             <NavMobile />
             {children}

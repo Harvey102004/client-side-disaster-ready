@@ -5,39 +5,52 @@ import { EvacuationCenterProps } from "../../types";
 // -------- FETCH ALL EVACUATION CENTER ---------- //
 
 const API_GET_EVACUATIONS =
-  "http://192.168.137.1/Disaster-backend/controllers/evacuationCenterController.php";
+  "http://localhost:3001/public/fetchEvacuationCenterClient.php ";
 
+interface FetchEvacuationResponse {
+  success: boolean;
+  data: EvacuationCenterProps[];
+}
 export const getEvacuationCenters = async (): Promise<
   EvacuationCenterProps[]
 > => {
   try {
-    const response =
-      await axios.get<EvacuationCenterProps[]>(API_GET_EVACUATIONS);
+    const response = await axios.get(API_GET_EVACUATIONS);
 
-    return response.data;
-  } catch (error: any) {
-    console.error(error);
-    throw new Error(
-      error?.response?.data?.message || "Failed to fetch Evacuation center"
-    );
+    if (Array.isArray(response.data)) {
+      return response.data;
+    }
+
+    console.warn("Unexpected response structure:", response.data);
+    return [];
+  } catch (error) {
+    console.error("Evac fetch error:", error);
+    return [];
   }
 };
 
 // -------- GET EVACUATION CENTER DETAILS ---------- /
 
-export const getEvacuationDetails = async ({ id }: { id: string }) => {
+export const getEvacuationDetails = async ({
+  id,
+}: {
+  id: string;
+}): Promise<EvacuationCenterProps | null> => {
   try {
-    const response = await axios.get<EvacuationCenterProps>(
-      `http://192.168.137.1/Disaster-backend/controllers/evacuationCenterController.php?&id=${id}`
+    const response = await axios.get(
+      `http://localhost:3001/public/evacuationCenterClient.php?id=${id}`
     );
 
-    console.log(response.data);
+    const data = response.data?.data ?? response.data ?? null;
 
-    return response.data;
+    if (!data || typeof data !== "object") {
+      console.warn("Invalid evac details structure:", response.data);
+      return null;
+    }
+
+    return data;
   } catch (error: any) {
-    console.log(error);
-    throw new Error(
-      error?.response?.data?.message || "Failed to fetch Evacuation center"
-    );
+    console.error("Evac details error:", error);
+    return null;
   }
 };

@@ -1,6 +1,6 @@
-import { Progress } from "@/components/ui/progress";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import { Progress } from "@/app/components/ui/progress";
+import { Card, CardContent } from "@/app/components/ui/card";
+import { Button } from "@/app/components/ui/button";
 import { MapPin } from "lucide-react";
 
 import Image from "next/image";
@@ -68,7 +68,7 @@ export const EvacuationCards = ({
 
     let filename = "";
 
-    if (normalized === "municipality of los banos") {
+    if (normalized === "municipal of los banos") {
       filename = "anos-logo.png";
     } else {
       filename = `${normalized.replace(/\s+/g, "-").replace(/[^\w-]/g, "")}-logo.png`;
@@ -92,7 +92,7 @@ export const EvacuationCards = ({
                 ?.toLowerCase()
                 .normalize("NFD")
                 .replace(/[\u0300-\u036f]/g, "")
-                .trim() === "municipality of los banos"
+                .trim() === "municipal of los banos"
             ) {
               return "lb-logo.png";
             }

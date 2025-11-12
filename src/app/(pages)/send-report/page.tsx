@@ -2,28 +2,56 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from "@/app/components/ui/select";
 
 export default function SendReport() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
   const [showFull, setShowFull] = useState(false);
-  const [loadingLocation, setLoadingLocation] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    const id = toast.error(
+      <p className="overflow-hidden text-xs break-words whitespace-normal">
+        Location Access Notice
+      </p>,
+      {
+        description: (
+          <p className="overflow-hidden text-[10px] break-words whitespace-normal text-zinc-800">
+            Your current location will be used to provide accurate coordinates
+            when submitting a disaster report.
+          </p>
+        ),
+        duration: Infinity,
+        className:
+          "!max-w-[330px] !gap-3 whitespace-normal !overflow-hidden " +
+          "rounded-lg py-3 ",
+
+        action: (
+          <button
+            onClick={() => toast.dismiss(id)}
+            className=" shrink-0 rounded-full bg-red-600 px-2 py-1.5 text-[10px] font-medium text-white "
+          >
+            OK
+          </button>
+        ),
+      }
+    );
+  }, []);
 
   // ✅ useForm setup
   const {
     register,
     handleSubmit,
     setValue,
-    getValues,
     formState: { errors },
     reset,
   } = useForm({
@@ -41,13 +69,6 @@ export default function SendReport() {
   // ✅ Get user location (lat, lng, and formatted address)
   useEffect(() => {
     async function getLocation() {
-      setLoadingLocation(true);
-      if (!navigator.geolocation) {
-        setValue("address", "Geolocation not supported by your browser.");
-        setLoadingLocation(false);
-        return;
-      }
-
       navigator.geolocation.getCurrentPosition(
         async (pos) => {
           const { latitude, longitude } = pos.coords;
@@ -87,13 +108,11 @@ export default function SendReport() {
               "Failed to fetch location. Please enter manually."
             );
           } finally {
-            setLoadingLocation(false);
           }
         },
         (err) => {
           console.error("Location error:", err);
           setValue("address", "Failed to get location.");
-          setLoadingLocation(false);
         },
         { enableHighAccuracy: true, timeout: 10000 }
       );
@@ -143,7 +162,7 @@ export default function SendReport() {
       }
 
       const response = await fetch(
-        "http://192.168.1.137/Disaster-backend/public/createIncident.php",
+        "http://localhost:3001/public/createIncident.php",
         {
           method: "POST",
           body: formData,
@@ -170,8 +189,8 @@ export default function SendReport() {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen px-4 pb-20">
-      <div className="w-full max-w-lg rounded-2xl px-6 space-y-5 relative md:hidden">
+    <div className="flex items-center  justify-center min-h-screen px-4 pb-20">
+      <div className="w-full max-w-lg rounded-2xl px-4 space-y-5 relative flex flex-col md:hidden">
         <h1 className="text-xl font-bold text-center">Send a Report</h1>
         <p className="text-xs text-center text-gray-500 leading-normal tracking-wide -mt-3">
           Please provide accurate details and a clear photo to help authorities
@@ -226,22 +245,6 @@ export default function SendReport() {
           {/* Hidden lat/lng */}
           <input type="hidden" {...register("lat")} />
           <input type="hidden" {...register("lng")} />
-
-          {/* Location */}
-          <div className="mt-6">
-            <label className="block text-xs mb-1">Location</label>
-            <input
-              {...register("address", { required: "Location is required" })}
-              className="w-full rounded-md border p-3 text-xs"
-              placeholder="Detecting location..."
-              disabled={loadingLocation}
-            />
-            {errors.address?.message && (
-              <p className="text-red-500 text-[10px] mt-1">
-                {String(errors.address.message)}
-              </p>
-            )}
-          </div>
 
           {/* Name */}
           <div className="mt-8">

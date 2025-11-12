@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { MdOutlineZoomOutMap } from "react-icons/md";
 import { RiCloseFill } from "react-icons/ri";
 import dynamic from "next/dynamic";
+import { IoClose } from "react-icons/io5";
 
 const MapDetails = dynamic(
   () => import("@/app/components/maps/contact-map-details"),
@@ -45,11 +46,9 @@ const ContactPopUp = ({ id, onclose }: ContactPopUpProps) => {
 
   if (isLoading) {
     return (
-      <div
-        className="fixed  inset-0 z-50 flex items-center justify-center bg-black
-      "
-      >
-        <h1>Loading... Please wait</h1>
+      <div className="flex flex-col gap-3 items-center justify-center h-[300px]">
+        <p>Loading Emergency Resources...</p>
+        <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-300 border-t-dark-blue"></div>
       </div>
     );
   }
@@ -69,9 +68,9 @@ const ContactPopUp = ({ id, onclose }: ContactPopUpProps) => {
           <div className="absolute inset-0 z-50 bg-background rounded-lg shadow-lg">
             <button
               onClick={() => setIsFullMapOpen(false)}
-              className="absolute top-3 right-3 z-40 text-black bg-white rounded-full p-1 hover:bg-gray-200 transition"
+              className="absolute top-4 right-4 z-40 text-black  "
             >
-              <RiCloseFill size={15} />
+              <IoClose size={20} />
             </button>
             <MapDetails
               lat={lat}
@@ -88,9 +87,9 @@ const ContactPopUp = ({ id, onclose }: ContactPopUpProps) => {
           />
           <button
             onClick={onclose}
-            className="absolute top-3 right-3 flex items-center justify-center z-45 text-black bg-white rounded-full p-1 hover:bg-gray-200 transition"
+            className="absolute top-3 right-3 flex items-center justify-center z-45 text-black  "
           >
-            <RiCloseFill size={15} />
+            <IoClose size={20} />
           </button>
 
           {hasValidCoords ? (
@@ -101,7 +100,7 @@ const ContactPopUp = ({ id, onclose }: ContactPopUpProps) => {
             />
           ) : (
             <div className="h-full flex items-center justify-center text-gray-600 text-sm">
-              ⚠️ Location data not available
+              Location data not available
             </div>
           )}
 
@@ -247,13 +246,14 @@ export default function EmergencyResources() {
 
         <div className="flex flex-col gap-8 mt-10 md:gap-16 md:mt-20 md:grid md:grid-cols-3  place-items-center relative">
           {isLoading && (
-            <p className="text-xs text-center   absolute top-1/2 -translate-1/2 left-1/2  text-black dark:text-white  rounded-md">
-              Loading... Please wait.
-            </p>
+            <div className="flex flex-col gap-3 items-center col-span-3 justify-center h-[300px]">
+              <p className="text-xs md:text-base">Loading Please wait...</p>
+              <div className="animate-spin rounded-full h-10 w-10 border-4 border-gray-300 border-t-dark-blue"></div>
+            </div>
           )}
 
           {!isLoading && sortedData.length === 0 && (
-            <p className="text-xs md:text-base text-gray-500 flex flex-col gap-3 items-center justify-center mt-10">
+            <p className="text-xs   md:col-span-3 md:text-base text-gray-500 flex flex-col gap-3 items-center justify-center mt-10">
               <FaRegFolderOpen className="text-3xl md:text-5xl" />
               No contact information available.
             </p>

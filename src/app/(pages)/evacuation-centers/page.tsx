@@ -18,7 +18,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../../components/ui/select";
+} from "../../components/ui/select";
 import { useQuery } from "@tanstack/react-query";
 import { getEvacuationCenters } from "@/server/evacuation";
 import { EvacuationCenterProps } from "../../../../types";
@@ -263,6 +263,8 @@ export default function Page() {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   };
+
+  console.log(data);
 
   // Filter logic
   const filteredData = useMemo(() => {

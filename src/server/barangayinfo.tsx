@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BarangayContact_API =
-  "http://192.168.137.1/Disaster-backend/public/barangayContact.php";
+  "http://localhost:3001/public/fetchBarangayContactInfoClient.php";
 
 export type brgyContactType = {
   id: number | string;
