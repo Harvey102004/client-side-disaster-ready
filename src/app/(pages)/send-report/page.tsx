@@ -23,8 +23,9 @@ export default function SendReport() {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    let id: string | number;
     if (window.innerWidth < 768) {
-      const id = toast.error(
+      id = toast.error(
         <p className="overflow-hidden text-xs break-words whitespace-normal">
           Location Access Notice
         </p>,
@@ -49,6 +50,10 @@ export default function SendReport() {
         }
       );
     }
+
+    return () => {
+      if (id) toast.dismiss(id);
+    };
   }, []);
 
   // ✅ useForm setup

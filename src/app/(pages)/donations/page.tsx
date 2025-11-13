@@ -140,6 +140,7 @@ export default function DonationsPage() {
           <input
             type="text"
             id="fullName"
+            autoComplete="off"
             placeholder="Enter your name"
             {...register("name")}
             className="w-full  border  border-gray-400 dark:border-gray-600 outline-none rounded mt-2 text-xs p-3"
@@ -156,6 +157,7 @@ export default function DonationsPage() {
           <label className="text-xs">Email *</label>
           <input
             type="email"
+            autoComplete="off"
             placeholder="Enter your email"
             {...register("email")}
             className="w-full  border  border-gray-400 dark:border-gray-600  outline-none rounded mt-2 text-xs p-3"
@@ -172,6 +174,7 @@ export default function DonationsPage() {
           <label className="text-xs">Amount *</label>
           <input
             type="number"
+            autoComplete="off"
             placeholder="Enter donation amount"
             {...register("amount", { valueAsNumber: true })}
             className="w-full  border  border-gray-400 dark:border-gray-600  outline-none rounded mt-2 text-xs p-3"
@@ -263,6 +266,7 @@ export default function DonationsPage() {
             <input
               type="text"
               placeholder="Enter your card number"
+              autoComplete="off"
               value={cardInputDisplay}
               maxLength={19} // 16 digits + 3 dashes
               onChange={(e) => {
@@ -358,6 +362,7 @@ export default function DonationsPage() {
                 <label className="text-xs mb-2">CVC *</label>
                 <input
                   type="number"
+                  autoComplete="off"
                   placeholder="eg.(123) "
                   {...register("cvc", {
                     valueAsNumber: true,
