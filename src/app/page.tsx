@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { TypeAnimation } from "react-type-animation";
 import axios from "axios";
@@ -38,12 +38,12 @@ import {
 import DateTimeDisplay from "./components/DateConvertion";
 import { IoClose } from "react-icons/io5";
 import { HiOutlineArrowsExpand } from "react-icons/hi";
+import Link from "next/link";
+import { toast } from "sonner";
 
 export default function Home() {
-  const [showModal, setShowModal] = useState(false);
-  const [step, setStep] = useState(1);
-  const [loading, setLoading] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
 
   const [selectedWeatherId, setSelectedWeatherId] = useState<string | null>(
     null
@@ -62,109 +62,6 @@ export default function Home() {
     disaster: false,
     community: false,
   });
-
-  // Step 1 fields
-  const [amount, setAmount] = useState("");
-  const [description, setDescription] = useState("");
-
-  // Step 2 fields
-  const [paymentIntentId, setPaymentIntentId] = useState("");
-  const [paymentType, setPaymentType] = useState("gcash");
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [cardNumber, setCardNumber] = useState("");
-  const [expMonth, setExpMonth] = useState("");
-  const [expYear, setExpYear] = useState("");
-  const [cvc, setCvc] = useState("");
-
-  const paymentOptions = [
-    { id: "card", label: "Card", image: "card.png" },
-    { id: "gcash", label: "GCash", image: "gcash-logo.png" },
-    { id: "paymaya", label: "PayMaya", image: "paymaya.png" },
-  ];
-
-  // ✅ Step 1: Create Payment Intent
-  const handleCreatePaymentIntent = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    try {
-      const res = await axios.post(
-        "http://192.168.137.1/Disaster-backend/public/createPaymentIntent.php",
-        {
-          amount: Math.round(Number(amount) * 100),
-          description,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-
-      if (res.data?.data?.id) {
-        setPaymentIntentId(res.data.data.id);
-        setStep(2);
-      } else {
-        alert("Failed to create payment intent.");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error creating payment intent.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // ✅ Step 2: Attach Payment Method (JSON payload version)
-  const handleAttachPaymentMethod = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-
-    const payload: any = {
-      payment_intent_id: paymentIntentId,
-      type: paymentType,
-      name: name.trim() || "Anonymous Donor",
-      email: email.trim() || "noemail@disasterready.app",
-      return_url:
-        "http://localhost/Disaster-backend/public/attachmentPaymentMethod.php",
-    };
-
-    if (paymentType === "card") {
-      payload.details = {
-        card_number: cardNumber,
-        exp_month: Number(expMonth),
-        exp_year: Number(expYear),
-        cvc: cvc,
-      };
-    }
-
-    try {
-      const res = await axios.post(
-        "http://localhost/Disaster-backend/public/attachPaymentMethod.php",
-        payload,
-        { headers: { "Content-Type": "application/json" } }
-      );
-
-      const redirect = res.data?.data?.attributes?.next_action?.redirect?.url;
-      if (redirect) window.open(redirect, "_self");
-      else alert("Failed to get payment redirect URL.");
-    } catch (err: any) {
-      console.error(err.response?.data || err);
-      alert(err.response?.data?.error || "Error attaching payment method.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  // Reset modal state when closed
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setStep(1);
-    setAmount("");
-    setDescription("");
-    setName("");
-    setEmail("");
-  };
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["allAdvisories"],
@@ -227,6 +124,19 @@ export default function Home() {
     arrows: false,
   };
 
+  useEffect(() => {
+    const userAgent =
+      typeof navigator !== "undefined" ? navigator.userAgent : "";
+    setIsMobile(/Mobi|Android/i.test(userAgent));
+  }, []);
+
+  const handleClick = (e: React.MouseEvent) => {
+    if (!isMobile) {
+      e.preventDefault();
+      toast.error("This feature is only accessible on mobile browsers");
+    }
+  };
+
   return (
     <div className="flex flex-col items-center overflow-x-hidden gap-16 ">
       {/* HERO SECTION */}
@@ -279,12 +189,13 @@ export default function Home() {
         </Slider>
 
         {data?.disaster && data?.disaster.length > 0 && (
-          <button
-            onClick={() => setShowModal(true)}
-            className=" absolute bottom-5 z-40 -translate-x-1/2 left-1/2 text-[10px] md:text-sm mt-6  py-2 px-4 md:py-2.5 md:px-6 rounded-full shadow bg-dark-blue text-white "
+          <Link
+            href="/donations"
+            onClick={handleClick}
+            className="absolute bottom-5 z-40 -translate-x-1/2 left-1/2 text-[10px] md:text-sm mt-6 py-2 px-4 md:py-2.5 md:px-6 rounded-full shadow bg-dark-blue text-white"
           >
             Donate Now
-          </button>
+          </Link>
         )}
       </div>
 
@@ -853,201 +764,6 @@ export default function Home() {
               </div>
             )}
           </Card>
-        </div>
-      )}
-
-      {/* 🪟 DONATION MODAL */}
-      {showModal && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-[9999]">
-          <div className="relative bg-white dark:bg-neutral-900 rounded-xl p-6 w-[90%] max-w-max shadow-xl">
-            {/* CLOSE BUTTON */}
-            <button
-              onClick={handleCloseModal}
-              className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-md"
-            >
-              ✕
-            </button>
-
-            {/* STEP 1: CREATE PAYMENT INTENT */}
-            {step === 1 && (
-              <form
-                onSubmit={handleCreatePaymentIntent}
-                className="relative flex flex-col gap-4]"
-              >
-                {/* Loading overlay */}
-                {loading && (
-                  <div className="absolute inset-0 flex items-center justify-center  rounded-lg z-10">
-                    <div className="flex flex-col items-center text-dark-blue">
-                      <div className="border-dark-blue border-t-background h-10 w-10 animate-spin rounded-full border-4" />
-                    </div>
-                  </div>
-                )}
-
-                <div className="mb-3">
-                  <h3 className="font-semibold text-lg text-center mb-3">
-                    Make a Donation
-                  </h3>
-
-                  <p className="text-xs text-center text-gray-600">
-                    A little kindness goes a long way. Thank you for your
-                    support.
-                  </p>
-                </div>
-
-                <input
-                  type="number"
-                  value={amount}
-                  onChange={(e) => setAmount(e.target.value)}
-                  placeholder="Amount (₱)"
-                  className="border rounded text-sm p-3 mt-4 w-full dark:bg-neutral-800 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none [-moz-appearance:textfield]"
-                  required
-                  disabled={loading}
-                />
-
-                <input
-                  type="text"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  placeholder="Description"
-                  className="border rounded p-3 text-sm mt-4 dark:bg-neutral-800"
-                  required
-                  disabled={loading}
-                />
-
-                <button
-                  disabled={loading}
-                  type="submit"
-                  className={`rounded p-3 text-sm mt-3 transition ${
-                    loading
-                      ? "bg-gray-500 cursor-not-allowed text-"
-                      : "bg-blue-600 hover:bg-blue-700 text-white"
-                  }`}
-                >
-                  {loading ? "Creating..." : "Next Step"}
-                </button>
-              </form>
-            )}
-
-            {/* STEP 2: ATTACH PAYMENT METHOD */}
-            {step === 2 && (
-              <form
-                onSubmit={handleAttachPaymentMethod}
-                className="relative flex flex-col gap-6 w-full max-w-2xl mx-auto py-2"
-              >
-                {/* Loading overlay */}
-                {loading && (
-                  <div className="absolute inset-0 flex items-center justify-center  rounded-lg z-10">
-                    <div className="flex flex-col items-center text-dark-blue">
-                      <div className="border-dark-blue border-t-background h-10 w-10 animate-spin rounded-full border-4" />
-                    </div>
-                  </div>
-                )}
-
-                {/* Title */}
-                <h3 className="font-semibold text-xl text-center text-dark-blue dark:text-white mb-4">
-                  Donation Details
-                </h3>
-
-                {/* Payment Options */}
-                <div className="flex justify-center flex-wrap gap-4">
-                  {paymentOptions.map((opt) => (
-                    <div
-                      key={opt.id}
-                      onClick={() => setPaymentType(opt.id)}
-                      className={`cursor-pointer rounded-xl shadow-md transition-all duration-200 flex flex-col items-center justify-center p-5 w-[180px] h-[130px]
-              ${
-                paymentType === opt.id
-                  ? "border-2 border-blue-600 text-blue-600 bg-blue-50 dark:bg-blue-900/30 scale-105"
-                  : "border border-gray-300 dark:border-neutral-600 text-gray-800 dark:text-white hover:scale-105"
-              }`}
-                    >
-                      <img
-                        src={`/images/${opt.image}`}
-                        alt={opt.label}
-                        className="w-12 h-12 object-contain mb-2"
-                      />
-                      <span className="text-sm font-medium">{opt.label}</span>
-                    </div>
-                  ))}
-                </div>
-
-                {/* Card Fields */}
-                {paymentType === "card" && (
-                  <div className="flex flex-col gap-3 px-4 mt-4">
-                    <input
-                      type="text"
-                      value={cardNumber}
-                      onChange={(e) => setCardNumber(e.target.value)}
-                      placeholder="Card Number"
-                      className="border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 outline-none rounded-lg p-3 text-sm focus:ring focus:ring-blue-500/50"
-                      required
-                    />
-                    <div className="flex gap-3">
-                      <input
-                        type="text"
-                        value={expMonth}
-                        onChange={(e) => setExpMonth(e.target.value)}
-                        placeholder="MM"
-                        className="border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 outline-none rounded-lg p-3 text-sm flex-1 focus:ring-2 focus:ring-blue-500/50"
-                        required
-                      />
-                      <input
-                        type="text"
-                        value={expYear}
-                        onChange={(e) => setExpYear(e.target.value)}
-                        placeholder="YYYY"
-                        className="border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 outline-none rounded-lg p-3 text-sm flex-1 focus:ring-2 focus:ring-blue-500/50"
-                        required
-                      />
-                      <input
-                        type="text"
-                        value={cvc}
-                        onChange={(e) => setCvc(e.target.value)}
-                        placeholder="CVC"
-                        className="border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 outline-none rounded-lg p-3 text-sm flex-1 focus:ring-2 focus:ring-blue-500/50"
-                        required
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* User Info */}
-                <div className="flex flex-col gap-4 px-4 ">
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Full Name"
-                    className="border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 outline-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500/50"
-                    required
-                  />
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Email Address"
-                    className="border border-gray-300 dark:border-neutral-700 dark:bg-neutral-800 outline-none rounded-lg p-3 text-sm focus:ring-2 focus:ring-blue-500/50"
-                    required
-                  />
-                </div>
-
-                {/* Submit Button */}
-                <div className="mt-6 flex justify-center">
-                  <button
-                    disabled={loading}
-                    type="submit"
-                    className={`w-1/2 rounded-lg p-3 font-medium text-white text-sm transition-all duration-200 ${
-                      loading
-                        ? "bg-gray-400 cursor-not-allowed"
-                        : "bg-blue-600 hover:bg-blue-700 shadow-md"
-                    }`}
-                  >
-                    {loading ? "Processing..." : "Proceed to Pay"}
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
         </div>
       )}
 

@@ -638,7 +638,7 @@ export default function EvacuationListView({
                     : "top-1/2 left-5 -translate-y-1/2 w-max"
                 }`}
                 >
-                  <div className="relative overflow-auto rounded-lg bg-white/90 p-3 text-sm shadow-md backdrop-blur font-[Poppins]">
+                  <div className="relative max-h-[600px] scrollBar overflow-auto rounded-lg bg-white/90 p-3 text-sm shadow-md backdrop-blur font-[Poppins]">
                     {isMobile && (
                       <button
                         onClick={() => setMobileDirectionsVisible(false)}

@@ -10,6 +10,8 @@ export default function ConditionalFooter() {
     "/realtime-updates",
     "/evacuation-centers",
     "/send-report",
+    "/donations",
+    "/success",
   ];
 
   if (hideFooterRoutes.includes(pathname)) {

@@ -20,6 +20,7 @@ export default function SendReport() {
   const [showFull, setShowFull] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     if (window.innerWidth < 768) {
@@ -175,6 +176,31 @@ export default function SendReport() {
       setSubmitting(false);
     }
   };
+
+  useEffect(() => {
+    if (typeof navigator !== "undefined") {
+      const ua = navigator.userAgent || navigator.vendor || "";
+      setIsMobile(/Mobi|Android/i.test(ua));
+    }
+  }, []);
+
+  if (!isMobile) {
+    return (
+      <div className="flex flex-col items-center justify-center text-center h-[75vh] text-gray-500 px-4">
+        <img
+          src="https://media.lordicon.com/icons/wired/outline/721-hand-with-phone.gif"
+          alt="Mobile only"
+          className="md:w-28 md:h-28 h-20 w-20 mb-4 opacity-90 rounded-full"
+        />
+        <p className="font-medium text-xs md:text-base">
+          Incident reporting is only accessible on mobile browsers.
+        </p>
+        <p className="text-[11px] not-odd:md:text-xs mt-2 text-gray-400">
+          Please open this page using your smartphone browser.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex items-center  justify-center min-h-screen px-4 pb-10">
@@ -362,21 +388,6 @@ export default function SendReport() {
             </button>
           </div>
         )}
-      </div>
-
-      {/* ✅ DESKTOP NOTICE */}
-      <div className="hidden md:flex flex-col items-center justify-center text-center text-gray-500 text-base  ">
-        <img
-          src="https://media.lordicon.com/icons/wired/outline/721-hand-with-phone.gif"
-          alt="Mobile only"
-          className="w-28 h-28 mb-4 opacity-90 rounded-full dark:brightness-90"
-        />
-        <p className="font-medium">
-          Incident reporting is accessible only on mobile web.
-        </p>
-        <p className="text-xs text-gray-400 mt-2">
-          Please open this page using your smartphone browser.
-        </p>
       </div>
     </div>
   );
