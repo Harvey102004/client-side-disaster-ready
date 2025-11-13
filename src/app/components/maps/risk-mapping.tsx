@@ -80,7 +80,7 @@ export default function RiskMappingMap() {
     (async () => {
       try {
         const res = await fetch(
-          "http://localhost:3001/public/fetchDisasterMappingClient.php"
+          "https://greenyellow-lion-623632.hostingersite.com/public/fetchDisasterMappingClient.php"
         );
         if (!res.ok) throw new Error("Failed to fetch markers");
 

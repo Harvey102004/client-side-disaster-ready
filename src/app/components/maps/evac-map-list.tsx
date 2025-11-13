@@ -110,7 +110,7 @@ export default function EvacuationListView({
     const fetchRisk = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:3001/public/fetchDisasterMappingClient.php"
+          "https://greenyellow-lion-623632.hostingersite.com/public/fetchDisasterMappingClient.php"
         );
 
         // res.data is already an array

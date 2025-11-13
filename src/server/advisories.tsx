@@ -10,16 +10,16 @@ import {
 // FETCH ADVISORIES
 
 const API_URL_WEATHER =
-  "http://localhost:3001/public/fetchWeatherAdvisoriesClient.php";
+  "https://greenyellow-lion-623632.hostingersite.com/public/fetchWeatherAdvisoriesClient.php";
 
 const API_URL_ROAD =
-  "http://localhost:3001/public/fetchRoadAdvisoriesClient.php";
+  "https://greenyellow-lion-623632.hostingersite.com/public/fetchRoadAdvisoriesClient.php";
 
 const API_URL_DISASTER =
-  "http://localhost:3001/public/fetchDisasterUpdateClient.php";
+  "https://greenyellow-lion-623632.hostingersite.com/public/fetchDisasterUpdateClient.php";
 
 const API_URL_COMMUNITY =
-  "http://localhost:3001/public/fetchCommunityNoticeClient.php";
+  "https://greenyellow-lion-623632.hostingersite.com/public/fetchCommunityNoticeClient.php";
 
 export const getWeather = async (): Promise<TWeatherAdvisory[]> => {
   try {
@@ -81,7 +81,7 @@ export const getCommunity = async (): Promise<TCommunity[]> => {
 export const getWeatherDetails = async ({ id }: { id: string }) => {
   try {
     const response = await axios.get<TWeatherAdvisory[]>(
-      `http://localhost:3001/public/fetchWeatherAdvisoriesClient.php?id=${id}`
+      `https://greenyellow-lion-623632.hostingersite.com/public/fetchWeatherAdvisoriesClient.php?id=${id}`
     );
     return response.data[0] || null;
   } catch (error) {
@@ -92,7 +92,7 @@ export const getWeatherDetails = async ({ id }: { id: string }) => {
 export const getRoadDetails = async ({ id }: { id: string }) => {
   try {
     const response = await axios.get<TRoadAdvisory[]>(
-      `http://localhost:3001/public/fetchRoadAdvisoriesClient.php?id=${id}`
+      `https://greenyellow-lion-623632.hostingersite.com/public/fetchRoadAdvisoriesClient.php?id=${id}`
     );
 
     return response.data[0] || null;
@@ -105,7 +105,7 @@ export const getRoadDetails = async ({ id }: { id: string }) => {
 export const getDisasterDetails = async ({ id }: { id: string }) => {
   try {
     const response = await axios.get<TDisasterAdvisory[]>(
-      `http://localhost:3001/public/fetchDisasterUpdateClient.php?id=${id}`
+      `https://greenyellow-lion-623632.hostingersite.com/public/fetchDisasterUpdateClient.php?id=${id}`
     );
 
     return response.data[0] || null;
@@ -118,7 +118,7 @@ export const getDisasterDetails = async ({ id }: { id: string }) => {
 export const getCommunityDetails = async ({ id }: { id: string }) => {
   try {
     const response = await axios.get<TWeatherAdvisory[]>(
-      `http://localhost:3001/public/fetchCommunityNoticeClient.php?id=${id}`
+      `https://greenyellow-lion-623632.hostingersite.com/public/fetchCommunityNoticeClient.php?id=${id}`
     );
 
     return response.data[0] || null;

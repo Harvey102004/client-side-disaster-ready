@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { TypeAnimation } from "react-type-animation";
 import axios from "axios";
@@ -234,7 +234,7 @@ export default function Home() {
         <Slider {...settings}>
           {data?.disaster && data?.disaster.length > 0 ? (
             data?.disaster.map((disaster) => {
-              const imageUrl = `http://localhost/Disaster-backend/${disaster.img_path}`;
+              const imageUrl = `https://greenyellow-lion-623632.hostingersite.com/${disaster.img_path}`;
               return (
                 <div
                   key={disaster.id}
@@ -301,183 +301,222 @@ export default function Home() {
         </div>
       ) : (
         <>
-          {/* WEATHER ADVISORIES */}
-          <div className="w-full mt-4 mx-auto px-4 sm:px-6 lg:px-10 flex flex-col  gap-4 md:gap-6">
-            {data?.weather && data?.weather.length > 0 && (
-              <h3 className="md:text-lg text-sm font-semibold  flex items-center md:gap-3 gap-2  ml-2 text-gray-800 dark:text-gray-100 md:mb-2">
-                <FaCloud className="md:text-2xl text-lg" /> Weather Advisories :
-              </h3>
-            )}
+          {[
+            {
+              key: "weather",
+              length: data?.weather?.length || 0,
+              content: (
+                <div className="w-full mt-4 mx-auto px-4 sm:px-6 lg:px-10 flex flex-col gap-4 md:gap-6">
+                  {data?.weather && data.weather.length > 0 && (
+                    <h3 className="md:text-lg text-sm font-semibold flex items-center md:gap-3 gap-2 ml-2 text-gray-800 dark:text-gray-100 md:mb-2">
+                      <FaCloud className="md:text-2xl text-lg" /> Weather
+                      Advisories :
+                    </h3>
+                  )}
 
-            <div
-              className="flex flex-row gap-4 hide-scrollbar overflow-x-auto snap-x snap-mandatory 
-                    lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-x-visible"
-            >
-              {data?.weather && data?.weather.length > 0 ? (
-                data?.weather.map((weather) => (
                   <div
-                    key={weather.id}
-                    className="flex-none w-[280px] snap-start lg:flex-auto lg:w-auto"
+                    className="flex flex-row gap-4 hide-scrollbar overflow-x-auto snap-x snap-mandatory 
+                          lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-x-visible"
                   >
-                    <WeatherCards
-                      id={weather.id}
-                      title={weather.title}
-                      desc={weather.details}
-                      dateTime={weather.date_time}
-                      addedBy={weather.added_by}
-                      onViewDetails={() => {
-                        setSelectedWeatherId(weather.id.toString());
-                        setAdvisoriesModal((prev) => ({
-                          ...prev,
-                          weather: true,
-                        }));
-                      }}
-                    />
+                    {data?.weather && data.weather.length > 0 ? (
+                      data.weather.map((weather) => (
+                        <div
+                          key={weather.id}
+                          className="flex-none w-[280px] snap-start lg:flex-auto lg:w-auto"
+                        >
+                          <WeatherCards
+                            id={weather.id}
+                            title={weather.title}
+                            desc={weather.details}
+                            dateTime={weather.date_time}
+                            addedBy={weather.added_by}
+                            onViewDetails={() => {
+                              setSelectedWeatherId(weather.id.toString());
+                              setAdvisoriesModal((prev) => ({
+                                ...prev,
+                                weather: true,
+                              }));
+                            }}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <div className="flex w-[98vw] mt-12 flex-col items-center justify-center gap-2">
+                        <FaCloud className="text-dark-blue text-2xl md:text-4xl" />
+                        <p className="text-xs md:text-base">
+                          No Weather Advisory for now.
+                        </p>
+                      </div>
+                    )}
                   </div>
-                ))
-              ) : (
-                <div className=" flex w-[98vw] mt-12 flex-col items-center justify-center gap-2">
-                  <FaCloud className="text-dark-blue text-2xl md:text-4xl" />
-                  <p className="text-xs md:text-base">
-                    No Weather Advisory for now.
-                  </p>
                 </div>
-              )}
-            </div>
-          </div>
-          {/* ROAD ADVISORIES */}
-          <div className="w-full mt-4 mx-auto px-4 sm:px-6 lg:px-10 flex flex-col gap-4 md:gap-6">
-            {data?.road && data?.road.length > 0 && (
-              <h3 className="md:text-lg text-sm font-semibold flex items-center md:gap-3 gap-2  ml-2 text-gray-800 dark:text-gray-100 md:mb-2">
-                <FaRoad className="md:text-2xl text-lg" /> Road Advisories :
-              </h3>
-            )}
+              ),
+            },
+            {
+              key: "road",
+              length: data?.road?.length || 0,
+              content: (
+                <div className="w-full mt-4 mx-auto px-4 sm:px-6 lg:px-10 flex flex-col gap-4 md:gap-6">
+                  {data?.road && data.road.length > 0 && (
+                    <h3 className="md:text-lg text-sm font-semibold flex items-center md:gap-3 gap-2 ml-2 text-gray-800 dark:text-gray-100 md:mb-2">
+                      <FaRoad className="md:text-2xl text-lg" /> Road Advisories
+                      :
+                    </h3>
+                  )}
 
-            <div
-              className="flex flex-row gap-4 w-full hide-scrollbar overflow-x-auto snap-x snap-mandatory 
-                    lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-x-visible"
-            >
-              {data?.road && data?.road.length > 0 ? (
-                data?.road.map((road) => (
                   <div
-                    key={road.id}
-                    className="flex-none w-[280px] snap-start lg:flex-auto lg:w-auto"
+                    className="flex flex-row gap-4 w-full hide-scrollbar overflow-x-auto snap-x snap-mandatory 
+                          lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-x-visible"
                   >
-                    <RoadCards
-                      id={road.id}
-                      title={road.title}
-                      desc={road.details}
-                      dateTime={road.date_time}
-                      addedBy={road.added_by}
-                      status={road.status}
-                      onViewDetails={() => {
-                        setSelectedRoadId(road.id.toString());
-                        setAdvisoriesModal((prev) => ({ ...prev, road: true }));
-                      }}
-                    />
+                    {data?.road && data.road.length > 0 ? (
+                      data.road.map((road) => (
+                        <div
+                          key={road.id}
+                          className="flex-none w-[280px] snap-start lg:flex-auto lg:w-auto"
+                        >
+                          <RoadCards
+                            id={road.id}
+                            title={road.title}
+                            desc={road.details}
+                            dateTime={road.date_time}
+                            addedBy={road.added_by}
+                            status={road.status}
+                            onViewDetails={() => {
+                              setSelectedRoadId(road.id.toString());
+                              setAdvisoriesModal((prev) => ({
+                                ...prev,
+                                road: true,
+                              }));
+                            }}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <div className="flex w-[98vw] mt-12 flex-col items-center justify-center gap-2">
+                        <FaRoad className="text-dark-blue text-2xl md:text-4xl" />
+                        <p className="text-xs md:text-base">
+                          No Road Advisory for now.
+                        </p>
+                      </div>
+                    )}
                   </div>
-                ))
-              ) : (
-                <div className=" flex w-[98vw] mt-12 flex-col items-center justify-center gap-2">
-                  <FaRoad className="text-dark-blue text-2xl md:text-4xl" />
-                  <p className="text-xs md:text-base">
-                    No Road Advisory for now.
-                  </p>
                 </div>
-              )}
-            </div>
-          </div>
-          {/* COMMUNITY NOTICE */}
-          <div className="w-full mt-4 mx-auto px-4 sm:px-6 lg:px-10 flex flex-col gap-4 md:gap-6">
-            {data?.community && data.community.length > 0 && (
-              <h3 className="md:text-lg text-sm font-semibold flex items-center md:gap-3 gap-2  ml-2 text-gray-800 dark:text-gray-100 md:mb-2">
-                <FaUsers className="md:text-2xl text-lg" /> Community Notice :
-              </h3>
-            )}
+              ),
+            },
+            {
+              key: "community",
+              length: data?.community?.length || 0,
+              content: (
+                <div className="w-full mt-4 mx-auto px-4 sm:px-6 lg:px-10 flex flex-col gap-4 md:gap-6">
+                  {data?.community && data.community.length > 0 && (
+                    <h3 className="md:text-lg text-sm font-semibold flex items-center md:gap-3 gap-2 ml-2 text-gray-800 dark:text-gray-100 md:mb-2">
+                      <FaUsers className="md:text-2xl text-lg" /> Community
+                      Notice :
+                    </h3>
+                  )}
 
-            <div
-              className="flex flex-row gap-4 hide-scrollbar overflow-x-auto snap-x snap-mandatory 
-                    lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-x-visible"
-            >
-              {data?.community && data?.community.length > 0 ? (
-                data?.community.map((community) => (
                   <div
-                    key={community.id}
-                    className="flex-none w-[280px] snap-start lg:flex-auto lg:w-auto"
+                    className="flex flex-row gap-4 hide-scrollbar overflow-x-auto snap-x snap-mandatory 
+                          lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-x-visible"
                   >
-                    <CommunityCards
-                      id={community.id}
-                      title={community.title}
-                      desc={community.details}
-                      dateTime={community.date_time}
-                      addedBy={community.added_by}
-                      onViewDetails={() => {
-                        setSelectedCommunityId(community.id.toString());
-                        setAdvisoriesModal((prev) => ({
-                          ...prev,
-                          community: true,
-                        }));
-                      }}
-                    />
+                    {data?.community && data.community.length > 0 ? (
+                      data.community.map((community) => (
+                        <div
+                          key={community.id}
+                          className="flex-none w-[280px] snap-start lg:flex-auto lg:w-auto"
+                        >
+                          <CommunityCards
+                            id={community.id}
+                            title={community.title}
+                            desc={community.details}
+                            dateTime={community.date_time}
+                            addedBy={community.added_by}
+                            onViewDetails={() => {
+                              setSelectedCommunityId(community.id.toString());
+                              setAdvisoriesModal((prev) => ({
+                                ...prev,
+                                community: true,
+                              }));
+                            }}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <div className="flex w-[98vw] mt-12 flex-col items-center justify-center gap-2">
+                        <FaUsers className="text-dark-blue text-2xl md:text-4xl" />
+                        <p className="text-xs md:text-base">
+                          No Community Notice for now.
+                        </p>
+                      </div>
+                    )}
                   </div>
-                ))
-              ) : (
-                <div className=" flex w-[98vw] mt-12 flex-col items-center justify-center gap-2">
-                  <FaUsers className="text-dark-blue text-2xl md:text-4xl" />
-                  <p className="text-xs md:text-base">
-                    No Community Notice for now.
-                  </p>
                 </div>
-              )}
-            </div>
-          </div>
-          {/* DISASTER UPDATES */}
-          <div className="w-full mt-4 mx-auto px-4 sm:px-6 lg:px-10 flex flex-col gap-4 md:gap-6">
-            {data?.disaster && data?.disaster.length > 0 && (
-              <h3 className="md:text-lg text-sm font-semibold flex items-center md:gap-3 gap-2  ml-2 text-gray-800 dark:text-gray-100 md:mb-2">
-                <FaEarthAmericas className="md:text-2xl text-lg" /> Disaster
-                Updates :
-              </h3>
-            )}
+              ),
+            },
+            {
+              key: "disaster",
+              length: data?.disaster?.length || 0,
+              content: (
+                <div className="w-full mt-4 mx-auto px-4 sm:px-6 lg:px-10 flex flex-col gap-4 md:gap-6">
+                  {data?.disaster && data.disaster.length > 0 && (
+                    <h3 className="md:text-lg text-sm font-semibold flex items-center md:gap-3 gap-2 ml-2 text-gray-800 dark:text-gray-100 md:mb-2">
+                      <FaEarthAmericas className="md:text-2xl text-lg" />{" "}
+                      Disaster Updates :
+                    </h3>
+                  )}
 
-            <div
-              className="flex flex-row gap-4 hide-scrollbar overflow-x-auto snap-x snap-mandatory 
-                    lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-x-visible"
-            >
-              {data?.disaster && data?.disaster.length > 0 ? (
-                data?.disaster.map((disaster) => (
                   <div
-                    key={disaster.id}
-                    className="flex-none w-[280px] snap-start lg:flex-auto lg:w-auto"
+                    className="flex flex-row gap-4 hide-scrollbar overflow-x-auto snap-x snap-mandatory 
+                          lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-x-visible"
                   >
-                    <DisasterCards
-                      id={disaster.id}
-                      title={disaster.title}
-                      desc={disaster.details}
-                      dateTime={disaster.date_time}
-                      disasterType={disaster.disaster_type}
-                      addedBy={disaster.added_by}
-                      image={disaster.img_path}
-                      onViewDetails={() => {
-                        setSelectedDisasterId(disaster.id.toString());
-                        setAdvisoriesModal((prev) => ({
-                          ...prev,
-                          disaster: true,
-                        }));
-                      }}
-                    />
+                    {data?.disaster && data.disaster.length > 0 ? (
+                      data.disaster.map((disaster) => (
+                        <div
+                          key={disaster.id}
+                          className="flex-none w-[280px] snap-start lg:flex-auto lg:w-auto"
+                        >
+                          <DisasterCards
+                            id={disaster.id}
+                            title={disaster.title}
+                            desc={disaster.details}
+                            dateTime={disaster.date_time}
+                            disasterType={disaster.disaster_type}
+                            addedBy={disaster.added_by}
+                            image={disaster.img_path}
+                            onViewDetails={() => {
+                              setSelectedDisasterId(disaster.id.toString());
+                              setAdvisoriesModal((prev) => ({
+                                ...prev,
+                                disaster: true,
+                              }));
+                            }}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <div className="flex w-[98vw] mt-12 flex-col items-center justify-center gap-4">
+                        <FaEarthAmericas className="text-dark-blue text-2xl md:text-4xl" />
+                        <p className="text-xs md:text-base">
+                          No Disaster Updates for now.
+                        </p>
+                      </div>
+                    )}
                   </div>
-                ))
-              ) : (
-                <div className=" flex w-[98vw] mt-12 flex-col items-center justify-center gap-4">
-                  <FaEarthAmericas className="text-dark-blue text-2xl md:text-4xl" />
-                  <p className="text-xs md:text-base">
-                    No Disaster Updates for now.
-                  </p>
                 </div>
-              )}
-            </div>
-          </div>
+              ),
+            },
+          ]
+            .sort((a, b) => {
+              if (a.length === 0 && b.length > 0) return 1;
+              if (a.length > 0 && b.length === 0) return -1;
+              return b.length - a.length;
+            })
+            // Render sorted order
+            .map((section) => (
+              <React.Fragment key={section.key}>
+                {section.content}
+              </React.Fragment>
+            ))}
         </>
       )}
 
@@ -745,12 +784,12 @@ export default function Home() {
                   className="relative md:h-[250px] h-[180px] md:w-[300px] md:my-7    w-full md:rounded-lg md:ml-10 cursor-pointer group overflow-hidden "
                   onClick={() =>
                     setImagePreview(
-                      `http://localhost/Disaster-backend/${disasterDetails.img_path}`
+                      `https://greenyellow-lion-623632.hostingersite.com/${disasterDetails.img_path}`
                     )
                   }
                 >
                   <Image
-                    src={`http://localhost/Disaster-backend/${disasterDetails.img_path}`}
+                    src={`https://greenyellow-lion-623632.hostingersite.com/${disasterDetails.img_path}`}
                     alt="Disaster"
                     fill
                     className="object-cover object-center transition-transform duration-300 group-hover:scale-110"

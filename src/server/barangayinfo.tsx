@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const BarangayContact_API =
-  "http://localhost:3001/public/fetchBarangayContactInfoClient.php";
+  "https://greenyellow-lion-623632.hostingersite.com/public/fetchBarangayContactInfoClient.php";
 
 export type brgyContactType = {
   id: number | string;

@@ -5,7 +5,7 @@ import { EvacuationCenterProps } from "../../types";
 // -------- FETCH ALL EVACUATION CENTER ---------- //
 
 const API_GET_EVACUATIONS =
-  "http://localhost:3001/public/fetchEvacuationCenterClient.php ";
+  "https://greenyellow-lion-623632.hostingersite.com/public/fetchEvacuationCenterClient.php ";
 
 interface FetchEvacuationResponse {
   success: boolean;
@@ -38,7 +38,7 @@ export const getEvacuationDetails = async ({
 }): Promise<EvacuationCenterProps | null> => {
   try {
     const response = await axios.get(
-      `http://localhost:3001/public/evacuationCenterClient.php?id=${id}`
+      `https://greenyellow-lion-623632.hostingersite.com/public/evacuationCenterClient.php?id=${id}`
     );
 
     const data = response.data?.data ?? response.data ?? null;

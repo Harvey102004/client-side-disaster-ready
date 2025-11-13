@@ -57,11 +57,44 @@ export default function Page() {
     };
   }, []);
 
-  const heights = {
-    collapsed: isDesktop ? screenHeight * 0.19 : screenHeight * 0.17,
-    mid: screenHeight * 0.55,
-    full: screenHeight * 0.9,
-  };
+  const heights = useMemo(() => {
+    if (isDesktop) {
+      // 🖥️ Desktop view
+      return {
+        collapsed: screenHeight * 0.19,
+        mid: screenHeight * 0.55,
+        full: screenHeight * 0.9,
+      };
+    } else if (screenHeight <= 700) {
+      // 📱 Small phones (e.g. 5.5–6.0" display)
+      return {
+        collapsed: screenHeight * 0.17,
+        mid: screenHeight * 0.45,
+        full: screenHeight * 0.85,
+      };
+    } else if (screenHeight <= 900) {
+      // 📱 Medium phones (most Androids, iPhones)
+      return {
+        collapsed: screenHeight * 0.13,
+        mid: screenHeight * 0.5,
+        full: screenHeight * 0.88,
+      };
+    } else if (screenHeight <= 1000) {
+      // 📱 Medium phones (most Androids, iPhones)
+      return {
+        collapsed: screenHeight * 0.11,
+        mid: screenHeight * 0.5,
+        full: screenHeight * 0.88,
+      };
+    } else {
+      // 📲 Large phones / phablets
+      return {
+        collapsed: screenHeight * 0.16,
+        mid: screenHeight * 0.55,
+        full: screenHeight * 0.9,
+      };
+    }
+  }, [screenHeight, isDesktop]);
 
   const setSheetPosition = (height: number) => {
     const sheet = sheetRef.current;

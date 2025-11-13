@@ -277,7 +277,7 @@ export default function DisasterCards({
             <Image
               src={
                 image
-                  ? `http://localhost/Disaster-backend/${image}`
+                  ? `https://greenyellow-lion-623632.hostingersite.com/${image}`
                   : "/icons/default.png"
               }
               fill
