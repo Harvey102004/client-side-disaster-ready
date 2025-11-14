@@ -199,6 +199,7 @@ export default function SendReport() {
     }
   };
 
+  /*
   useEffect(() => {
     if (typeof navigator !== "undefined") {
       const ua = navigator.userAgent || navigator.vendor || "";
@@ -223,10 +224,11 @@ export default function SendReport() {
       </div>
     );
   }
+  */
 
   return (
     <div className="flex items-center  justify-center min-h-screen px-4 pb-10">
-      <div className="w-full max-w-lg rounded-2xl px-4 space-y-5 relative flex flex-col md:hidden">
+      <div className="w-full max-w-lg rounded-2xl px-4 space-y-5 relative flex flex-col ">
         {!submitted ? (
           <>
             {" "}
