@@ -123,7 +123,7 @@ export default function DonationsPage() {
         // For CARD payments (no redirect from PayMongo)
         toast.success("Payment successful!");
         window.location.href =
-          "https://client-side-disaster-ready.vercel.app/sucess";
+          "https://client-side-disaster-ready.vercel.app/success";
       } else {
         // Fallback
         toast.success("Donation created successfully!");
