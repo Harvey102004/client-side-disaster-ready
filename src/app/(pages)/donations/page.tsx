@@ -1,11 +1,13 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { toast } from "sonner";
 import { BiSolidDonateHeart } from "react-icons/bi";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import {
   Select,
   SelectContent,
@@ -34,6 +36,8 @@ type DonationFormData = z.infer<typeof donationSchema>;
 export default function DonationsPage() {
   const [loading, setLoading] = useState(false);
   const [cardInputDisplay, setCardInputDisplay] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
+  const router = useRouter();
 
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
@@ -135,6 +139,16 @@ export default function DonationsPage() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    const userAgent =
+      typeof navigator !== "undefined" ? navigator.userAgent : "";
+    setIsMobile(/Mobi|Android/i.test(userAgent));
+  }, []);
+
+  if (!isMobile) {
+    return router.push("/");
+  }
 
   return (
     <div className="max-w-md mx-auto p-4 pb-14">

@@ -2,8 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { TypeAnimation } from "react-type-animation";
-import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 import Slider from "react-slick";
 import { FaCloud, FaRoad, FaEarthAmericas, FaUsers } from "react-icons/fa6";
@@ -188,7 +186,6 @@ export default function Home() {
           )}
         </Slider>
 
-        {/* 
         {data?.disaster && data?.disaster.length > 0 && (
           <Link
             href="/donations"
@@ -198,14 +195,6 @@ export default function Home() {
             Donate Now
           </Link>
         )}
-        */}
-
-        <Link
-          href="/donations"
-          className="absolute bottom-5 z-40 -translate-x-1/2 left-1/2 text-[10px] md:text-sm mt-6 py-2 px-4 md:py-2.5 md:px-6 rounded-full shadow bg-dark-blue text-white"
-        >
-          Donate Now
-        </Link>
       </div>
 
       <h2 className="text-sm md:text-xl font-bold ">News & Updates</h2>

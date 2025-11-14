@@ -202,7 +202,6 @@ export default function SendReport() {
     }
   };
 
-  /*
   useEffect(() => {
     if (typeof navigator !== "undefined") {
       const ua = navigator.userAgent || navigator.vendor || "";
@@ -227,7 +226,6 @@ export default function SendReport() {
       </div>
     );
   }
-  */
 
   return (
     <div className="flex items-center  justify-center min-h-screen px-4 pb-10">
@@ -409,7 +407,7 @@ export default function SendReport() {
             </form>
           </>
         ) : (
-          <div className="flex flex-col items-center justify-center text-center py-20">
+          <div className="flex flex-col items-center h-[600px] justify-center text-center py-20">
             <IoIosCheckmarkCircle className="text-green-500 text-3xl mb-2" />
             <h2 className="text-lg font-semibold text-green-600">
               Report Submitted!
