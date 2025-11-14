@@ -14,6 +14,7 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import ReCAPTCHA from "react-google-recaptcha";
+import axios from "axios";
 
 const donationSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -61,26 +62,29 @@ export default function DonationsPage() {
 
   const onSubmit = async (formData: DonationFormData) => {
     setLoading(true);
-    const payload: any = {
-      name: formData.name,
-      email: formData.email,
-      amount: formData.amount! * 100,
-      description: formData.description,
-      type: formData.type,
-      return_url: "https://client-side-disaster-ready.vercel.app/success",
-    };
 
-    if (formData.type === "card") {
-      payload.details = {
-        card_number: formData.card_number!.replace(/\D/g, ""),
-        exp_month: Number(formData.exp_month),
-        exp_year: Number(formData.exp_year),
-        cvc: formData.cvc!.toString(),
-      };
-    }
     try {
-      const token = await recaptchaRef.current?.executeAsync();
+      // Prepare payload
+      const payload: any = {
+        name: formData.name,
+        email: formData.email,
+        amount: formData.amount! * 100, // PayMongo expects cents
+        description: formData.description,
+        type: formData.type,
+        return_url: "https://client-side-disaster-ready.vercel.app/success",
+      };
 
+      if (formData.type === "card") {
+        payload.details = {
+          card_number: formData.card_number!.replace(/\D/g, ""),
+          exp_month: Number(formData.exp_month),
+          exp_year: Number(formData.exp_year),
+          cvc: formData.cvc!.toString(),
+        };
+      }
+
+      // Execute reCAPTCHA
+      const token = await recaptchaRef.current?.executeAsync();
       if (!token) {
         toast.error("Captcha verification failed. Try again.", {
           className: "!text-xs",
@@ -88,23 +92,23 @@ export default function DonationsPage() {
         return;
       }
 
-      payload.captcha = token;
+      const payloadWithCaptcha = { ...payload, captcha: token };
 
-      const res = await fetch(
+      // Send donation request
+      const { data, status } = await axios.post(
         "https://greenyellow-lion-623632.hostingersite.com/public/donation.php",
+        payloadWithCaptcha,
         {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload),
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
 
-      const data = await res.json();
-
-      if (!res.ok || data.error) {
+      // Backend error handling
+      if (status !== 200 || data.error) {
         console.error("Donation error:", data);
         toast.error(`Donation failed: ${data.error || "Unknown error"}`);
-        setLoading(false);
         return;
       }
 
@@ -115,7 +119,7 @@ export default function DonationsPage() {
         toast.success("Redirecting to PayMongo...");
         window.location.href = redirectUrl;
       } else {
-        toast.success(" Donation created successfully!");
+        toast.success("Donation created successfully!");
       }
     } catch (err: any) {
       console.error("Donation request failed:", err);
