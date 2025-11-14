@@ -182,9 +182,12 @@ export default function SendReport() {
         setPhotoPreview(null);
         setSubmitted(true);
       } else {
-        toast.error(result.message || "Failed to send report.", {
-          className: "!text-xs",
-        });
+        toast.error(
+          result.error || result.message || "Failed to send report.",
+          {
+            className: "!text-xs",
+          }
+        );
       }
     } catch (err: any) {
       console.error("Submit error:", err);
