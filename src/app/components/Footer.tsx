@@ -47,7 +47,7 @@ export default function Footer() {
           </div>
 
           <div className="mt-3 text-center text-[6px] md:absolute md:bottom-3 md:left-1/2 md:-translate-x-1/2 md:text-[9px]">
-            <p>&copy; Disaster Map Evacuation System. </p>
+            <p>&copy; Disaster Ready. </p>
             <p>All Rights Reserved.</p>
           </div>
         </div>
