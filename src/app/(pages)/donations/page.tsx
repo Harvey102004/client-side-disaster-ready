@@ -116,9 +116,16 @@ export default function DonationsPage() {
         data?.attach_result?.data?.attributes?.next_action?.redirect?.url;
 
       if (redirectUrl) {
-        toast.success("Redirecting to PayMongo...");
+        // For GCash / PayMaya / GrabPay
+        toast.success("Redirecting to payment page...");
         window.location.href = redirectUrl;
+      } else if (formData.type === "card") {
+        // For CARD payments (no redirect from PayMongo)
+        toast.success("Payment successful!");
+        window.location.href =
+          "https://client-side-disaster-ready.vercel.app/sucess";
       } else {
+        // Fallback
         toast.success("Donation created successfully!");
       }
     } catch (err: any) {
