@@ -12,6 +12,7 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import { IoIosCamera, IoIosCheckmarkCircle } from "react-icons/io";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function SendReport() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -21,6 +22,8 @@ export default function SendReport() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+
+  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
   useEffect(() => {
     let id: string | number;
@@ -72,6 +75,7 @@ export default function SendReport() {
       phone: "",
       description: "",
       address: "",
+      captcha: "",
     },
   });
 
@@ -134,6 +138,18 @@ export default function SendReport() {
     setSubmitting(true);
 
     try {
+      const token = await recaptchaRef.current?.executeAsync();
+
+      if (!token) {
+        toast.error("Captcha verification failed. Try again.", {
+          className: "!text-xs",
+        });
+        setSubmitting(false);
+        return;
+      }
+
+      data.captcha = token;
+
       const formData = new FormData();
       formData.append("reporter_name", data.name.trim());
       formData.append("reporter_contact", data.phone.trim());
@@ -142,6 +158,7 @@ export default function SendReport() {
       formData.append("lat", data.lat);
       formData.append("lng", data.lng);
       formData.append("media", photoFile);
+      formData.append("captcha", token);
 
       const response = await axios.post(
         "https://greenyellow-lion-623632.hostingersite.com/public/createIncident.php",
@@ -363,6 +380,17 @@ export default function SendReport() {
                     Description is required
                   </p>
                 )}
+              </div>
+
+              <div className="absolute h-0">
+                <ReCAPTCHA
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                  size="invisible"
+                  ref={recaptchaRef}
+                  onChange={(token: string | null) =>
+                    setValue("captcha", token || "")
+                  }
+                />
               </div>
 
               {/* Submit */}

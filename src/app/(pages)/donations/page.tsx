@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -13,6 +13,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
+import ReCAPTCHA from "react-google-recaptcha";
 
 const donationSchema = z.object({
   name: z.string().min(2, "Name is required"),
@@ -24,12 +25,16 @@ const donationSchema = z.object({
   exp_month: z.number().optional(),
   exp_year: z.number().optional(),
   cvc: z.number().optional(),
+  captcha: z.string(),
 });
 
 type DonationFormData = z.infer<typeof donationSchema>;
+
 export default function DonationsPage() {
   const [loading, setLoading] = useState(false);
   const [cardInputDisplay, setCardInputDisplay] = useState("");
+
+  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
   const {
     register,
@@ -49,6 +54,7 @@ export default function DonationsPage() {
       exp_month: undefined,
       exp_year: undefined,
       cvc: undefined,
+      captcha: "",
     },
   });
   const type = watch("type");
@@ -73,6 +79,17 @@ export default function DonationsPage() {
       };
     }
     try {
+      const token = await recaptchaRef.current?.executeAsync();
+
+      if (!token) {
+        toast.error("Captcha verification failed. Try again.", {
+          className: "!text-xs",
+        });
+        return;
+      }
+
+      payload.captcha = token;
+
       const res = await fetch(
         "https://greenyellow-lion-623632.hostingersite.com/public/donation.php",
         {
@@ -381,6 +398,17 @@ export default function DonationsPage() {
             </div>
           </div>
         )}
+
+        <div className="absolute h-0">
+          <ReCAPTCHA
+            sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+            size="invisible"
+            ref={recaptchaRef}
+            onChange={(token: string | null) =>
+              setValue("captcha", token || "")
+            }
+          />
+        </div>
 
         <button
           type="submit"
