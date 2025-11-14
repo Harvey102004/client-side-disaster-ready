@@ -28,8 +28,6 @@ export const getWeather = async (): Promise<TWeatherAdvisory[]> => {
       return response.data;
     }
 
-    console.log(response.data);
-
     return [];
   } catch (error) {
     console.error(error);
@@ -40,7 +38,11 @@ export const getWeather = async (): Promise<TWeatherAdvisory[]> => {
 export const getRoad = async (): Promise<TRoadAdvisory[]> => {
   try {
     const response = await axios.get<TRoadAdvisory[]>(API_URL_ROAD);
-    return response.data;
+    if (Array.isArray(response.data)) {
+      return response.data;
+    }
+
+    return [];
   } catch (error) {
     console.error(error);
     return [];
