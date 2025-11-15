@@ -4,14 +4,15 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-const [isMobile, setIsMobile] = useState(false);
-
-useEffect(() => {
-  const userAgent = typeof navigator !== "undefined" ? navigator.userAgent : "";
-  setIsMobile(/Mobi|Android/i.test(userAgent));
-}, []);
-
 export default function SuccessDonate() {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const userAgent =
+      typeof navigator !== "undefined" ? navigator.userAgent : "";
+    setIsMobile(/Mobi|Android/i.test(userAgent));
+  }, []);
+
   const router = useRouter();
 
   if (!isMobile) {
