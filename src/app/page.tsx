@@ -186,10 +186,9 @@ export default function Home() {
           )}
         </Slider>
 
-        {data?.disaster && data?.disaster.length > 0 && (
+        {data?.disaster && data?.disaster.length > 0 && isMobile && (
           <Link
             href="/donations"
-            onClick={handleClick}
             className="absolute bottom-5 z-40 -translate-x-1/2 left-1/2 text-[10px] md:text-sm mt-6 py-2 px-4 md:py-2.5 md:px-6 rounded-full shadow bg-dark-blue text-white"
           >
             Donate Now
@@ -197,7 +196,7 @@ export default function Home() {
         )}
       </div>
 
-      <h2 className="text-sm md:text-xl font-bold ">News & Updates</h2>
+      <h2 className="text-sm md:text-xl font-bold">News & Updates</h2>
 
       {error && (
         <p className="text-red-500 text-sm">Failed to load advisories</p>
