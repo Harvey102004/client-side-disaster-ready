@@ -26,6 +26,31 @@ export default function SendReport() {
 
   const recaptchaRef = useRef<ReCAPTCHA | null>(null);
 
+  /* 
+
+    -- ETO SA ONSUBMIT --
+
+   const token = await recaptchaRef.current?.executeAsync();
+
+      if (!token) {
+        errorToast("Captcha verification failed. Try again.");
+        setSubmitting(false);
+        return;
+      }
+
+      data.captcha = token;
+
+    -- SA DEFAULT VALUES --
+
+      captcha: "",
+
+     -- SA FORMDATA --
+     
+      formData.append("captcha", token);
+
+
+  */
+
   useEffect(() => {
     let id: string | number;
     if (window.innerWidth < 768) {
@@ -76,7 +101,6 @@ export default function SendReport() {
       phone: "",
       description: "",
       address: "",
-      captcha: "",
     },
   });
 
@@ -138,15 +162,6 @@ export default function SendReport() {
     setSubmitting(true);
 
     try {
-      const token = await recaptchaRef.current?.executeAsync();
-
-      if (!token) {
-        errorToast("Captcha verification failed. Try again.");
-        setSubmitting(false);
-        return;
-      }
-
-      data.captcha = token;
       data.phone = phoneNumber;
 
       const formData = new FormData();
@@ -157,7 +172,6 @@ export default function SendReport() {
       formData.append("lat", data.lat);
       formData.append("lng", data.lng);
       formData.append("media", photoFile);
-      formData.append("captcha", token);
 
       const response = await axios.post(
         "https://greenyellow-lion-623632.hostingersite.com/public/createIncident.php",
@@ -386,16 +400,18 @@ export default function SendReport() {
                 )}
               </div>
 
-              <div className="absolute h-0">
-                <ReCAPTCHA
-                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-                  size="invisible"
-                  ref={recaptchaRef}
-                  onChange={(token: string | null) =>
-                    setValue("captcha", token || "")
-                  }
-                />
-              </div>
+              {/*
+                <div className="absolute h-0">
+                  <ReCAPTCHA
+                    sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                    size="invisible"
+                    ref={recaptchaRef}
+                    onChange={(token: string | null) =>
+                      setValue("captcha", token || "")
+                    }
+                  />
+                </div>
+                */}
 
               {/* Submit */}
               <button
