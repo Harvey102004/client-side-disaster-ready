@@ -116,7 +116,7 @@ export default function DonationsPage() {
 
       if (redirectUrl) {
         // For GCash / PayMaya / GrabPay
-        successToast("Redirecting to payment page...");
+        successToast("Success!", "Redirecting to payment page...");
         window.location.href = redirectUrl;
       } else if (formData.type === "card") {
         // For CARD payments (no redirect from PayMongo)
@@ -125,10 +125,10 @@ export default function DonationsPage() {
           "https://client-side-disaster-ready.vercel.app/success";
       } else {
         // Fallback
-        successToast("Donation created successfully!");
+        successToast("Success!", "Donation created successfully!");
       }
     } catch (err: any) {
-      errorToast("Error sending donation.");
+      errorToast("Oops!", "Error sending donation.");
     } finally {
       setLoading(false);
     }
