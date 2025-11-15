@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { BiSolidDonateHeart } from "react-icons/bi";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { successToast, errorToast } from "@/app/components/toast";
 
 import {
   Select,
@@ -72,7 +73,7 @@ export default function DonationsPage() {
       const payload: any = {
         name: formData.name,
         email: formData.email,
-        amount: formData.amount! * 100, // PayMongo expects cents
+        amount: formData.amount! * 100,
         description: formData.description,
         type: formData.type,
         return_url: "https://client-side-disaster-ready.vercel.app/success",
@@ -90,9 +91,7 @@ export default function DonationsPage() {
       // Execute reCAPTCHA
       const token = await recaptchaRef.current?.executeAsync();
       if (!token) {
-        toast.error("Captcha verification failed. Try again.", {
-          className: "!text-xs",
-        });
+        errorToast("Oops!", "Captcha verification failed. Try again.");
         return;
       }
 
@@ -112,7 +111,7 @@ export default function DonationsPage() {
       // Backend error handling
       if (status !== 200 || data.error) {
         console.error("Donation error:", data);
-        toast.error(`Donation failed: ${data.error || "Unknown error"}`);
+        errorToast("Donation Failed!", ` ${data.error || "Unknown error"}`);
         return;
       }
 
@@ -121,20 +120,19 @@ export default function DonationsPage() {
 
       if (redirectUrl) {
         // For GCash / PayMaya / GrabPay
-        toast.success("Redirecting to payment page...");
+        successToast("Redirecting to payment page...");
         window.location.href = redirectUrl;
       } else if (formData.type === "card") {
         // For CARD payments (no redirect from PayMongo)
-        toast.success("Payment successful!");
+        successToast("Payment successful!");
         window.location.href =
           "https://client-side-disaster-ready.vercel.app/success";
       } else {
         // Fallback
-        toast.success("Donation created successfully!");
+        successToast("Donation created successfully!");
       }
     } catch (err: any) {
-      console.error("Donation request failed:", err);
-      toast.error("Error sending donation.");
+      errorToast("Error sending donation.");
     } finally {
       setLoading(false);
     }
@@ -153,9 +151,8 @@ export default function DonationsPage() {
   return (
     <div className="max-w-md mx-auto p-4 pb-14">
       {loading && (
-        <div className="fixed inset-0 flex backdrop-blur-xs items-center justify-center z-40">
+        <div className="fixed inset-0 flex  items-center justify-center z-40 ">
           <div className="flex flex-col md:gap-5 gap-4 items-center justify-center h-[300px]">
-            <p className="text-xs ">Loading ...</p>
             <div className="animate-spin rounded-full h-7 w-7 md:h-10 md:w-10 border-4 border-gray-300 border-t-dark-blue"></div>
           </div>
         </div>

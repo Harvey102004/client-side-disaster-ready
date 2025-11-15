@@ -11,8 +11,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/app/components/ui/select";
-import { IoIosCamera, IoIosCheckmarkCircle } from "react-icons/io";
+import { IoIosCamera } from "react-icons/io";
 import ReCAPTCHA from "react-google-recaptcha";
+import { successToast, errorToast } from "@/app/components/toast";
 
 export default function SendReport() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -122,18 +123,17 @@ export default function SendReport() {
 
   // ✅ Submit to backend
   const onSubmit = async (data: any) => {
-    if (!photoFile)
-      return toast.error("Please take a photo first.", {
-        className: "!text-xs",
-      });
-    if (!data.status)
-      return toast.error("Please select severity.", {
-        className: "!text-xs",
-      });
+    if (!photoFile) return errorToast("Please take a photo first.");
+
+    if (!data.status) return errorToast("Please select severity.");
+
     if (!data.phone || !data.description)
-      return toast.error("Please fill in all required fields.", {
-        className: "!text-xs",
-      });
+      return errorToast("Please fill in all required fields.");
+
+    let phoneNumber = data.phone.trim();
+    if (phoneNumber.startsWith("0")) {
+      phoneNumber = "63" + phoneNumber.substring(1);
+    }
 
     setSubmitting(true);
 
@@ -141,18 +141,17 @@ export default function SendReport() {
       const token = await recaptchaRef.current?.executeAsync();
 
       if (!token) {
-        toast.error("Captcha verification failed. Try again.", {
-          className: "!text-xs",
-        });
+        errorToast("Captcha verification failed. Try again.");
         setSubmitting(false);
         return;
       }
 
       data.captcha = token;
+      data.phone = phoneNumber;
 
       const formData = new FormData();
       formData.append("reporter_name", data.name.trim());
-      formData.append("reporter_contact", data.phone.trim());
+      formData.append("reporter_contact", phoneNumber);
       formData.append("description", data.description.trim());
       formData.append("severity", data.status);
       formData.append("lat", data.lat);
@@ -172,30 +171,29 @@ export default function SendReport() {
 
       const result = response.data;
 
-      // Show message from backend
+      // success message
       if (result.success) {
-        toast.success(result.message || "Incident reported successfully!", {
-          className: "!text-xs",
-        });
+        successToast(
+          "Report Sent!",
+          result.message || "Incident reported successfully!"
+        );
         reset();
         setPhotoFile(null);
         setPhotoPreview(null);
         setSubmitted(true);
       } else {
-        toast.error(
-          result.error || result.message || "Failed to send report.",
-          {
-            className: "!text-xs",
-          }
+        errorToast(
+          "Request Failed!",
+          result.error || result.message || "Failed to send report."
         );
       }
     } catch (err: any) {
       console.error("Submit error:", err);
-      toast.error(
+      errorToast(
+        "Request Failed!",
         err.response?.data?.message ||
           err.response?.data?.error ||
-          "Failed to connect to backend.",
-        { className: "!text-xs" }
+          "Failed to connect to backend."
       );
     } finally {
       setSubmitting(false);
@@ -230,6 +228,13 @@ export default function SendReport() {
   return (
     <div className="flex items-center  justify-center min-h-screen px-4 pb-10">
       <div className="w-full max-w-lg rounded-2xl px-4 space-y-5 relative flex flex-col ">
+        {submitting && (
+          <div className="fixed inset-0 flex  items-center justify-center z-40 ">
+            <div className="flex flex-col md:gap-5 gap-4 items-center justify-center h-[300px]">
+              <div className="animate-spin rounded-full h-7 w-7 md:h-10 md:w-10 border-4 border-gray-300 border-t-dark-blue"></div>
+            </div>
+          </div>
+        )}
         {!submitted ? (
           <>
             {" "}
@@ -310,13 +315,9 @@ export default function SendReport() {
                 <input
                   {...register("phone", {
                     required: "Phone number is required",
-                    pattern: {
-                      value: /^63\d{10}$/,
-                      message: "Enter a valid PH number (e.g. 639123456789)",
-                    },
                   })}
                   className="w-full rounded-md border outline-none p-3 text-xs"
-                  placeholder="e.g. 639123456789"
+                  placeholder="e.g. 09123456789"
                 />
                 {errors.phone && (
                   <p className="text-red-500 text-[10px] mt-1">
@@ -408,8 +409,51 @@ export default function SendReport() {
           </>
         ) : (
           <div className="flex flex-col items-center h-[600px] justify-center text-center py-20">
-            <IoIosCheckmarkCircle className="text-green-500 text-3xl mb-2" />
-            <h2 className="text-lg font-semibold text-green-600">
+            <svg
+              className="w-10 h-10 mb-4"
+              viewBox="0 0 52 52"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              {/* Circle outline */}
+              <circle
+                className="stroke-dark-blue"
+                cx="26"
+                cy="26"
+                r="25"
+                fill="none"
+                strokeWidth="2"
+                strokeDasharray="157"
+                strokeDashoffset="157"
+                style={{ animation: "draw-circle 0.6s forwards" }}
+              />
+              {/* Check mark */}
+              <path
+                className="stroke-dark-blue"
+                fill="none"
+                strokeWidth="4"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M16 26 L24 34 L36 18"
+                strokeDasharray="34"
+                strokeDashoffset="34"
+                style={{ animation: "draw-check 0.4s forwards 0.6s" }}
+              />
+            </svg>
+
+            <style jsx>{`
+              @keyframes draw-circle {
+                to {
+                  stroke-dashoffset: 0;
+                }
+              }
+              @keyframes draw-check {
+                to {
+                  stroke-dashoffset: 0;
+                }
+              }
+            `}</style>
+
+            <h2 className="text-lg font-semibold text-dark-blue">
               Report Submitted!
             </h2>
             <p className="text-xs text-gray-500 mt-2 px-6">
@@ -418,10 +462,23 @@ export default function SendReport() {
             </p>
             <button
               onClick={() => setSubmitted(false)}
-              className="mt-6 bg-blue-600 hover:bg-blue-700 text-white text-xs px-5 py-3 rounded-md transition"
+              className="mt-6 bg-blue-600 hover:bg-blue-700 text-white text-[10px] px-5 py-2 rounded-md transition"
             >
               Send Another Report
             </button>
+
+            <style jsx>{`
+              @keyframes draw-circle {
+                to {
+                  stroke-dashoffset: 0;
+                }
+              }
+              @keyframes draw-check {
+                to {
+                  stroke-dashoffset: 0;
+                }
+              }
+            `}</style>
           </div>
         )}
       </div>
