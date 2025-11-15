@@ -1,24 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
 
 export default function SuccessDonate() {
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    const userAgent =
-      typeof navigator !== "undefined" ? navigator.userAgent : "";
-    setIsMobile(/Mobi|Android/i.test(userAgent));
-  }, []);
-
-  const router = useRouter();
-
-  if (!isMobile) {
-    return router.push("/");
-  }
-
   return (
     <div className="md:hidden h-[75vh] flex flex-col items-center justify-center  p-4">
       <svg
