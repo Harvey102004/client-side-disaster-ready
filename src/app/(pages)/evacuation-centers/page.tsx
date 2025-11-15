@@ -79,7 +79,7 @@ export default function Page() {
         mid: screenHeight * 0.5,
         full: screenHeight * 0.88,
       };
-    } else if (screenHeight <= 1100) {
+    } else if (screenHeight <= 2000) {
       // 📱 Medium phones (most Androids, iPhones)
       return {
         collapsed: screenHeight * 0.11,
