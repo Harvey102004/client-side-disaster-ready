@@ -240,7 +240,7 @@ export default function SendReport() {
   }
 
   return (
-    <div className="flex items-center  justify-center min-h-screen px-4 pb-10">
+    <div className="flex   justify-center  px-4 pb-10">
       <div className="w-full max-w-lg rounded-2xl px-4 space-y-5 relative flex flex-col ">
         {submitting && (
           <div className="fixed inset-0 flex  items-center justify-center z-40 ">
@@ -424,7 +424,7 @@ export default function SendReport() {
             </form>
           </>
         ) : (
-          <div className="flex flex-col items-center h-[600px] justify-center text-center py-20">
+          <div className="flex flex-col items-center h-[600px]  justify-center text-center py-20">
             <svg
               className="w-10 h-10 mb-4"
               viewBox="0 0 52 52"
