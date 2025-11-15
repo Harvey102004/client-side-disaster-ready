@@ -10,7 +10,7 @@ export function successToast(
 ) {
   toast.success(message, {
     description: description && (
-      <p className="overflow-hidden text-sm break-words whitespace-normal text-green-900">
+      <p className="overflow-hidden !text-[10px] break-words whitespace-normal text-green-900">
         {description}
       </p>
     ),
@@ -23,7 +23,7 @@ export function successToast(
       <CheckCircle2 className="h-6 w-6 shrink-0 fill-green-700 text-white" />
     ),
     classNames: {
-      title: "!font-semibold !text-green-900 text-sm",
+      title: "!font-semibold !text-green-900 !text-xs",
     },
   });
 }
@@ -31,7 +31,7 @@ export function successToast(
 export function errorToast(message: string, description?: string | ReactNode) {
   toast.error(message, {
     description: description && (
-      <p className="overflow-hidden text-sm break-words whitespace-normal text-red-900">
+      <p className="overflow-hidden !text-[10px] break-words whitespace-normal text-red-900">
         {description}
       </p>
     ),
@@ -42,7 +42,7 @@ export function errorToast(message: string, description?: string | ReactNode) {
       "rounded-lg py-3 px-4 flex items-start",
     icon: <XCircle className="h-6 w-6 shrink-0 fill-red-700 text-white" />,
     classNames: {
-      title: "!font-semibold !text-red-900 text-sm",
+      title: "!font-semibold !text-red-900 !text-xs",
     },
   });
 }
