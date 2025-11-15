@@ -472,7 +472,7 @@ export default function SendReport() {
             <h2 className="text-lg font-semibold text-dark-blue">
               Report Submitted!
             </h2>
-            <p className="text-xs text-gray-500 mt-2 px-6">
+            <p className="text-xs text-gray-500 mt-2 px-3">
               Your report has been successfully submitted. Please wait for a
               text message for updates regarding your report.
             </p>
