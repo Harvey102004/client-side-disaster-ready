@@ -186,9 +186,10 @@ export default function Home() {
           )}
         </Slider>
 
-        {data?.disaster && data?.disaster.length > 0 && isMobile && (
+        {data?.disaster && data?.disaster.length > 0 && (
           <Link
             href="/donations"
+            onClick={handleClick}
             className="absolute bottom-5 z-40 -translate-x-1/2 left-1/2 text-[10px] md:text-sm mt-6 py-2 px-4 md:py-2.5 md:px-6 rounded-full shadow bg-dark-blue text-white"
           >
             Donate Now
