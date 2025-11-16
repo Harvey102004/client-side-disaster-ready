@@ -284,8 +284,11 @@ export default function EvacuationListView({
 
   if (isLoading)
     return (
-      <div className="flex h-screen w-full items-center justify-center">
-        <p>Loading...</p>
+      <div className="fixed inset-0 flex  items-center justify-center z-40 ">
+        <div className="flex flex-col md:gap-5 gap-4 items-center justify-center h-[300px]">
+          <p>Loading evacuations...</p>
+          <div className="animate-spin rounded-full h-7 w-7 md:h-10 md:w-10 border-4 border-gray-300 border-t-dark-blue"></div>
+        </div>
       </div>
     );
 
