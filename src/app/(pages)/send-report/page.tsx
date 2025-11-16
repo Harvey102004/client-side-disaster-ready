@@ -12,8 +12,43 @@ import {
   SelectValue,
 } from "@/app/components/ui/select";
 import { IoIosCamera } from "react-icons/io";
-import ReCAPTCHA from "react-google-recaptcha";
 import { successToast, errorToast } from "@/app/components/toast";
+
+// 🔵 Image compression function
+const compressImage = (file: File): Promise<File> => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.src = e.target?.result as string;
+
+      img.onload = () => {
+        const canvas = document.createElement("canvas");
+        const ctx = canvas.getContext("2d");
+
+        const maxWidth = 900; // target width
+        const scale = maxWidth / img.width;
+
+        canvas.width = maxWidth;
+        canvas.height = img.height * scale;
+
+        ctx!.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob(
+          (blob) => {
+            const compressed = new File([blob!], file.name, {
+              type: "image/jpeg",
+            });
+            resolve(compressed);
+          },
+          "image/jpeg",
+          0.7 // compression quality
+        );
+      };
+    };
+    reader.readAsDataURL(file);
+  });
+};
 
 export default function SendReport() {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -23,33 +58,6 @@ export default function SendReport() {
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
-  const recaptchaRef = useRef<ReCAPTCHA | null>(null);
-
-  /* 
-
-    -- ETO SA ONSUBMIT --
-
-   const token = await recaptchaRef.current?.executeAsync();
-
-      if (!token) {
-        errorToast("Captcha verification failed. Try again.");
-        setSubmitting(false);
-        return;
-      }
-
-      data.captcha = token;
-
-    -- SA DEFAULT VALUES --
-
-      captcha: "",
-
-     -- SA FORMDATA --
-     
-      formData.append("captcha", token);
-
-
-  */
 
   useEffect(() => {
     let id: string | number;
@@ -135,14 +143,18 @@ export default function SendReport() {
     fileInputRef.current?.click();
   };
 
-  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handlePhotoChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    setPhotoFile(file);
 
+    // 🔵 Compress image first
+    const compressed = await compressImage(file);
+    setPhotoFile(compressed);
+
+    // 🔵 Create preview from compressed file
     const reader = new FileReader();
     reader.onloadend = () => setPhotoPreview(reader.result as string);
-    reader.readAsDataURL(file);
+    reader.readAsDataURL(compressed);
   };
 
   // ✅ Submit to backend
