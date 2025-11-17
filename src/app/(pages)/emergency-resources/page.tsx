@@ -9,7 +9,6 @@ import { brgyContactType } from "@/server/barangayinfo";
 import { FaRegFolderOpen } from "react-icons/fa6";
 import { useEffect, useState } from "react";
 import { MdOutlineZoomOutMap } from "react-icons/md";
-import { RiCloseFill } from "react-icons/ri";
 import dynamic from "next/dynamic";
 import { IoClose } from "react-icons/io5";
 
@@ -130,73 +129,63 @@ const ContactPopUp = ({ id, onclose }: ContactPopUpProps) => {
           </p>
         </div>
 
-        <div className="flex  justify-between items-centerf gap-5 px-5 mt-5">
-          <div className="flex flex-col gap-7  w-1/2 ">
-            <div className="flex flex-col gap-2 items-center justify-center">
-              <div>
-                <p className="  text-xs md:text-sm lg:text-base">
-                  {selectedContact?.captain_name}
-                </p>
-                <p className="text-[10px] pt-1"> Captain</p>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2 items-center justify-center">
-              <div>
-                <p className="  text-xs md:text-sm lg:text-base">
-                  {selectedContact?.contact_number}
-                </p>
-                <p className="text-[10px] pt-1"> Contact</p>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2 items-center justify-center ">
-              <div className="w-full">
-                <a
-                  href={`mailto:${selectedContact?.email}`}
-                  title={selectedContact?.email}
-                >
-                  <p className="  text-[10px] w-full pl-3 md:text-sm lg:text-base overflow-hidden truncate text-dark-blue">
-                    {selectedContact?.email}
-                  </p>
-                </a>
-                <p className="text-[10px] pt-1">Email</p>
-              </div>
-            </div>
+        <div className="grid grid-cols-2 grid-rows-3 gap-y-7 px-5 mt-5 text-center">
+          {/* Captain */}
+          <div>
+            <p className="text-xs md:text-sm lg:text-base break-words">
+              {selectedContact?.captain_name}
+            </p>
+            <p className="text-[10px] pt-1">Captain</p>
           </div>
 
-          <div className="w-1/2 flex flex-col gap-7  ">
-            <div className="flex flex-col gap-2 items-center justify-center">
-              <div>
-                <p className="text-xs md:text-sm lg:text-base">
-                  {selectedContact?.secretary_name}
-                </p>
-                <p className="text-[10px] pt-1"> Secretary</p>
-              </div>
-            </div>
+          {/* Secretary */}
+          <div>
+            <p className="text-xs md:text-sm lg:text-base break-words">
+              {selectedContact?.secretary_name}
+            </p>
+            <p className="text-[10px] pt-1">Secretary</p>
+          </div>
 
-            <div className="flex flex-col gap-2 items-center justify-center">
-              <div>
-                <p className="text-xs md:text-sm lg:text-base">
-                  {selectedContact?.landline}
-                </p>
-                <p className="text-[10px] pt-1"> Landline</p>
-              </div>
-            </div>
+          {/* Contact Number */}
+          <div>
+            <p className="text-xs md:text-sm lg:text-base break-words">
+              {selectedContact?.contact_number}
+            </p>
+            <p className="text-[10px] pt-1">Contact</p>
+          </div>
 
-            <div className="flex flex-col gap-2 items-center justify-center">
-              <div className="">
-                <a
-                  href={`${selectedContact?.facebook_page}`}
-                  title={selectedContact?.facebook_page}
-                >
-                  <p className="  text-[11px] w-full truncate text-dark-blue md:text-sm lg:text-base overflow-hidden">
-                    Facebook Page
-                  </p>
-                </a>
-                <p className="text-[10px] pt-1"> Facebook</p>
-              </div>
-            </div>
+          {/* Landline */}
+          <div>
+            <p className="text-xs md:text-sm lg:text-base break-words">
+              {selectedContact?.landline}
+            </p>
+            <p className="text-[10px] pt-1">Landline</p>
+          </div>
+
+          {/* Email */}
+          <div>
+            <a
+              href={`mailto:${selectedContact?.email}`}
+              title={selectedContact?.email}
+            >
+              <p className="text-xs md:text-sm lg:text-base break-words text-dark-blue">
+                {selectedContact?.email}
+              </p>
+            </a>
+            <p className="text-[10px] pt-1">Email</p>
+          </div>
+
+          {/* Facebook */}
+          <div>
+            <a
+              href={selectedContact?.facebook_page}
+              title={selectedContact?.facebook_page}
+            >
+              <p className="text-xs md:text-sm lg:text-base break-words text-dark-blue">
+                Facebook Page
+              </p>
+            </a>
+            <p className="text-[10px] pt-1">Facebook</p>
           </div>
         </div>
       </div>
