@@ -164,12 +164,13 @@ const ContactPopUp = ({ id, onclose }: ContactPopUpProps) => {
               href={`mailto:${selectedContact?.email}`}
               title={selectedContact?.email}
             >
-              <p className="text-xs md:text-sm lg:text-base break-words text-dark-blue">
+              <p className="text-xs md:text-sm lg:text-base truncate text-dark-blue">
                 {selectedContact?.email}
               </p>
             </a>
             <p className="text-[10px] pt-1">Email</p>
           </div>
+
           {/* Facebook */}
           <div>
             <a
