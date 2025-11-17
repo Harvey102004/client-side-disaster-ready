@@ -129,7 +129,7 @@ const ContactPopUp = ({ id, onclose }: ContactPopUpProps) => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 grid-rows-3 gap-y-7 px-5 mt-5 text-center">
+        <div className="grid grid-cols-2 gap-y-7 px-5 mt-5 pb-5 text-center">
           {/* Captain */}
           <div>
             <p className="text-xs md:text-sm lg:text-base break-words">
@@ -137,7 +137,6 @@ const ContactPopUp = ({ id, onclose }: ContactPopUpProps) => {
             </p>
             <p className="text-[10px] pt-1">Captain</p>
           </div>
-
           {/* Secretary */}
           <div>
             <p className="text-xs md:text-sm lg:text-base break-words">
@@ -145,7 +144,6 @@ const ContactPopUp = ({ id, onclose }: ContactPopUpProps) => {
             </p>
             <p className="text-[10px] pt-1">Secretary</p>
           </div>
-
           {/* Contact Number */}
           <div>
             <p className="text-xs md:text-sm lg:text-base break-words">
@@ -153,7 +151,6 @@ const ContactPopUp = ({ id, onclose }: ContactPopUpProps) => {
             </p>
             <p className="text-[10px] pt-1">Contact</p>
           </div>
-
           {/* Landline */}
           <div>
             <p className="text-xs md:text-sm lg:text-base break-words">
@@ -161,7 +158,6 @@ const ContactPopUp = ({ id, onclose }: ContactPopUpProps) => {
             </p>
             <p className="text-[10px] pt-1">Landline</p>
           </div>
-
           {/* Email */}
           <div>
             <a
@@ -174,7 +170,6 @@ const ContactPopUp = ({ id, onclose }: ContactPopUpProps) => {
             </a>
             <p className="text-[10px] pt-1">Email</p>
           </div>
-
           {/* Facebook */}
           <div>
             <a
