@@ -322,86 +322,92 @@ export default function DonationsPage() {
               </p>
             )}
 
-            <div className="flex gap-2 mt-4">
-              {/* Month */}
+            <div className="mt-4 flex flex-col gap-2">
+              <p className="text-xs">Expiration Date:</p>
+              <div className="flex gap-2 ">
+                {/* Month */}
 
-              <div className="flex flex-col w-1/3">
-                <label className="text-xs mb-2"> Month *</label>
-                <Select
-                  onValueChange={(val) => setValue("exp_month", Number(val))}
-                  defaultValue="1"
-                >
-                  <SelectTrigger className="w-full !bg-transparent  outline-none p-2  border-gray-400 dark:border-gray-600 border rounded text-xs">
-                    <SelectValue placeholder="Month" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {[
-                      { label: "Jan", value: 1 },
-                      { label: "Feb", value: 2 },
-                      { label: "Mar", value: 3 },
-                      { label: "Apr", value: 4 },
-                      { label: "May", value: 5 },
-                      { label: "Jun", value: 6 },
-                      { label: "Jul", value: 7 },
-                      { label: "Aug", value: 8 },
-                      { label: "Sep", value: 9 },
-                      { label: "Oct", value: 10 },
-                      { label: "Nov", value: 11 },
-                      { label: "Dec", value: 12 },
-                    ].map((month) => (
-                      <SelectItem
-                        key={month.value}
-                        value={month.value.toString()}
-                      >
-                        {month.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Year */}
-              <div className="w-1/3 flex flex-col ">
-                <label className="text-xs mb-2">Year *</label>
-                <Select
-                  onValueChange={(val) => setValue("exp_year", Number(val))}
-                  defaultValue="25"
-                >
-                  <SelectTrigger className="w-full  !bg-transparent  border-gray-400 dark:border-gray-600  outline-none p-2 border rounded text-xs">
-                    <SelectValue placeholder="Year" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Array.from({ length: 11 }, (_, i) => 2025 + i).map(
-                      (year) => (
-                        <SelectItem key={year} value={(year % 100).toString()}>
-                          {year}
+                <div className="flex flex-col w-1/3">
+                  <label className="text-xs mb-2"> Month *</label>
+                  <Select
+                    onValueChange={(val) => setValue("exp_month", Number(val))}
+                    defaultValue="1"
+                  >
+                    <SelectTrigger className="w-full !bg-transparent  outline-none p-2  border-gray-400 dark:border-gray-600 border rounded text-xs">
+                      <SelectValue placeholder="Month" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {[
+                        { label: "Jan", value: 1 },
+                        { label: "Feb", value: 2 },
+                        { label: "Mar", value: 3 },
+                        { label: "Apr", value: 4 },
+                        { label: "May", value: 5 },
+                        { label: "Jun", value: 6 },
+                        { label: "Jul", value: 7 },
+                        { label: "Aug", value: 8 },
+                        { label: "Sep", value: 9 },
+                        { label: "Oct", value: 10 },
+                        { label: "Nov", value: 11 },
+                        { label: "Dec", value: 12 },
+                      ].map((month) => (
+                        <SelectItem
+                          key={month.value}
+                          value={month.value.toString()}
+                        >
+                          {month.label}
                         </SelectItem>
-                      )
-                    )}
-                  </SelectContent>
-                </Select>
-              </div>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              {/* CVC */}
-              <div className="w-1/3 flex flex-col">
-                <label className="text-xs mb-2">CVC *</label>
-                <input
-                  type="number"
-                  autoComplete="off"
-                  placeholder="eg.(123) "
-                  {...register("cvc", {
-                    valueAsNumber: true,
-                    max: 999,
-                    min: 0,
-                  })}
-                  maxLength={3}
-                  className="w-full  border-gray-400  outline-none dark:border-gray-600 p-2.5 border text-xs rounded"
-                  onInput={(e: any) => {
-                    if (e.target.value.length > 3)
-                      e.target.value = e.target.value.slice(0, 3);
-                  }}
-                  disabled={loading}
-                />
+                {/* Year */}
+                <div className="w-1/3 flex flex-col ">
+                  <label className="text-xs mb-2">Year *</label>
+                  <Select
+                    onValueChange={(val) => setValue("exp_year", Number(val))}
+                    defaultValue="25"
+                  >
+                    <SelectTrigger className="w-full  !bg-transparent  border-gray-400 dark:border-gray-600  outline-none p-2 border rounded text-xs">
+                      <SelectValue placeholder="Year" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {Array.from({ length: 11 }, (_, i) => 2025 + i).map(
+                        (year) => (
+                          <SelectItem
+                            key={year}
+                            value={(year % 100).toString()}
+                          >
+                            {year}
+                          </SelectItem>
+                        )
+                      )}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                {/* CVC */}
+                <div className="w-1/3 flex flex-col">
+                  <label className="text-xs mb-2">CVC *</label>
+                  <input
+                    type="number"
+                    autoComplete="off"
+                    placeholder="eg.(123) "
+                    {...register("cvc", {
+                      valueAsNumber: true,
+                      max: 999,
+                      min: 0,
+                    })}
+                    maxLength={3}
+                    className="w-full  border-gray-400  outline-none dark:border-gray-600 p-2.5 border text-xs rounded"
+                    onInput={(e: any) => {
+                      if (e.target.value.length > 3)
+                        e.target.value = e.target.value.slice(0, 3);
+                    }}
+                    disabled={loading}
+                  />
+                </div>
               </div>
             </div>
           </div>
