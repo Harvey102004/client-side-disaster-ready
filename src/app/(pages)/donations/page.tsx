@@ -322,8 +322,8 @@ export default function DonationsPage() {
               </p>
             )}
 
-            <div className="mt-4 flex flex-col gap-2">
-              <p className="text-xs">Expiration Date:</p>
+            <div className="mt-4 flex flex-col gap-4">
+              <p className="text-xs">Expiration Date *</p>
               <div className="flex gap-2 ">
                 {/* Month */}
 
