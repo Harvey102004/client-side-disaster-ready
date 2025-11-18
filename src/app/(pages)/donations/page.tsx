@@ -98,37 +98,44 @@ export default function DonationsPage() {
         "https://greenyellow-lion-623632.hostingersite.com/public/donation.php",
         payloadWithCaptcha,
         {
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
         }
       );
 
       // Backend error handling
       if (status !== 200 || data.error) {
         console.error("Donation error:", data);
-        errorToast("Donation Failed!", ` ${data.error || "Unknown error"}`);
+        // Use backend error message if available
+        errorToast("Donation Failed!", data.error || "Unknown error");
         return;
       }
+
+      // If backend returns a success message, use it
+      const backendMessage = data.message || "Donation created successfully!";
 
       const redirectUrl =
         data?.attach_result?.data?.attributes?.next_action?.redirect?.url;
 
       if (redirectUrl) {
         // For GCash / PayMaya / GrabPay
-        successToast("Success!", "Redirecting to payment page...");
+        successToast("Success!", backendMessage);
         window.location.href = redirectUrl;
       } else if (formData.type === "card") {
-        // For CARD payments (no redirect from PayMongo)
-        successToast("Payment successful!");
+        // For CARD payments
+        successToast("Success!", backendMessage);
         window.location.href =
           "https://client-side-disaster-ready.vercel.app/success";
       } else {
         // Fallback
-        successToast("Success!", "Donation created successfully!");
+        successToast("Success!", backendMessage);
       }
     } catch (err: any) {
-      errorToast("Oops!", "Error sending donation.");
+      console.error("Donation error:", err);
+
+      // Try to get backend error message if available
+      const message =
+        err.response?.data?.error || "Error sending donation. Try again.";
+      errorToast("Oops!", message);
     } finally {
       setLoading(false);
     }

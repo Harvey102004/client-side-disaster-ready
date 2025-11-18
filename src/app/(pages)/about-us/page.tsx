@@ -83,7 +83,7 @@ export default function About() {
           />
         </div>
       </div>
-      <div className="mx-auto mt-14 flex w-[90%] max-w-[1100px] flex-wrap justify-around gap-y-10 md:mt-25 lg:mt-32">
+      <div className="mx-auto mt-14 flex w-[90%] max-w-[1100px] flex-wrap lg:justify-around justify-between gap-y-10 md:mt-25 lg:mt-32">
         {aboutCardMessage.map((mess, index) => (
           <CardAbout
             key={index}
