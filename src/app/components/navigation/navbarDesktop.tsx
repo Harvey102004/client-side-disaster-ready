@@ -24,7 +24,7 @@ export default function NavbarDesktop() {
     { link: "Home", path: "/" },
     { link: "Calamities", path: "/calamities" },
     { link: "Emergency Resources", path: "/emergency-resources" },
-    { link: "Realtime Updates", path: "/realtime-updates" },
+    { link: "Map", path: "/realtime-updates" },
     { link: "Evacuation Centers", path: "/evacuation-centers" },
     { link: "Prone Areas", path: "/prone-areas" },
     { link: "About Us", path: "/about-us" },

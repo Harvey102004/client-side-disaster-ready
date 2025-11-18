@@ -45,7 +45,16 @@ export default function NavMobile() {
       label: "Evacuations",
       href: "/evacuation-centers",
     },
-    { icon: <RiSendPlaneFill />, label: "Report", href: "/send-report" },
+    {
+      icon: <RiSendPlaneFill />,
+      label: (
+        <span className="flex flex-col leading-[10px] text-center">
+          <span>Report</span>
+          <span>Incidents</span>
+        </span>
+      ),
+      href: "/send-report",
+    },
   ];
 
   if (!mounted) {
@@ -81,7 +90,7 @@ export default function NavMobile() {
             return (
               <Link
                 href={link.href}
-                key={link.label}
+                key={link.href}
                 className="relative flex h-full w-1/5 items-center justify-center"
               >
                 {!isActive && (

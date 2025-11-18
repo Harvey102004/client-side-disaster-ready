@@ -29,7 +29,7 @@ export default function SidebarMobile({ onClick }: { onClick?: () => void }) {
       icon: <FaPhone />,
     },
     {
-      link: "Realtime Updates",
+      link: "Map",
       path: "/realtime-updates",
       icon: <HiLocationMarker />,
     },
