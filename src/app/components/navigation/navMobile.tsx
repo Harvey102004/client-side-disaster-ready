@@ -48,9 +48,8 @@ export default function NavMobile() {
     {
       icon: <RiSendPlaneFill />,
       label: (
-        <span className="flex flex-col leading-[10px] text-center">
-          <span>Report</span>
-          <span>Incidents</span>
+        <span className="flex flex-col gap-1 leading-[6px] text-[7px]  text-center">
+          <span>Report Incidents</span>
         </span>
       ),
       href: "/send-report",
@@ -81,7 +80,7 @@ export default function NavMobile() {
           </div>
         )}
 
-        <ul className="z-10 flex w-full items-center justify-between">
+        <ul className="z-10 flex w-full items-center justify-between mt-1">
           {navLinks.map((link, index) => {
             const isActive =
               pathname === link.href ||
@@ -94,9 +93,13 @@ export default function NavMobile() {
                 className="relative flex h-full w-1/5 items-center justify-center"
               >
                 {!isActive && (
-                  <div className="transition-all duration-300 text-lg flex items-center text-white flex-col gap-1">
-                    {link.icon}
-                    <span className="text-[8px] text-nowrap">{link.label}</span>
+                  <div className="transition-all duration-300 text-lg flex gap-1 items-center text-white flex-col justify-center h-full leading-tight">
+                    <div className="h-5 w-5 flex items-center justify-center">
+                      {link.icon}
+                    </div>{" "}
+                    <div className="text-[8px] text-center leading-[7px] h-[18px] flex items-center justify-center">
+                      {link.label}
+                    </div>
                   </div>
                 )}
               </Link>
