@@ -22,7 +22,7 @@ export default function SidebarMobile({ onClick }: { onClick?: () => void }) {
 
   const navLinks = [
     { link: "Home", path: "/", icon: <GoHomeFill /> },
-    { link: "Calamities", path: "/calamities", icon: <FaEarthAsia /> },
+    { link: "Safety Tips", path: "/calamities", icon: <FaEarthAsia /> },
     {
       link: "Emergency Resources",
       path: "/emergency-resources",

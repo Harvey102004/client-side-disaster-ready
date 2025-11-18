@@ -22,7 +22,7 @@ export default function NavbarDesktop() {
 
   const navLinks = [
     { link: "Home", path: "/" },
-    { link: "Calamities", path: "/calamities" },
+    { link: "Safety Tips", path: "/calamities" },
     { link: "Emergency Resources", path: "/emergency-resources" },
     { link: "Map", path: "/realtime-updates" },
     { link: "Evacuation Centers", path: "/evacuation-centers" },
