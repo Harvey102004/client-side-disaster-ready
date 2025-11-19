@@ -271,9 +271,8 @@ export default function DisasterCards({
       dark:border-gray-500/40 dark:bg-transparent"
     >
       <CardHeader>
-        <div className="flex gap-3 w-[90%]">
-          {/* Image */}
-          <div className="relative h-14 w-14 overflow-hidden rounded-md bg-transparent">
+        <div className="flex gap-3 w-full overflow-hidden">
+          <div className="relative shrink-0 h-14 w-14 overflow-hidden rounded-md bg-transparent">
             <Image
               src={
                 image
@@ -286,19 +285,18 @@ export default function DisasterCards({
             />
           </div>
 
-          {/* Title + Type + Date */}
-          <div className="w-[50%] ">
-            <CardTitle className=" truncate md:text-base text-xs">
+          <div className="flex-1 min-w-0">
+            <CardTitle className="truncate md:text-base text-xs">
               {title}
             </CardTitle>
 
             {disasterType && (
-              <CardDescription className="text-dark-blue mt-1 text-xs">
+              <CardDescription className="text-dark-blue mt-1 text-xs truncate">
                 {disasterType}
               </CardDescription>
             )}
 
-            <CardDescription className="mt-1 text-[8px] md:text-[10px] text-gray-800 dark:text-gray-500">
+            <CardDescription className="mt-1 text-[8px] md:text-[10px] text-gray-800 dark:text-gray-500 truncate">
               <DateTimeDisplay value={dateTime} />
             </CardDescription>
           </div>
