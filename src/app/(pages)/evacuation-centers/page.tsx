@@ -200,6 +200,7 @@ export default function Page() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["evacuationsCenter"],
     queryFn: getEvacuationCenters,
+    refetchInterval: 10000,
   });
 
   // =========================

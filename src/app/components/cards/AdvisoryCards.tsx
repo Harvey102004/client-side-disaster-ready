@@ -287,8 +287,8 @@ export default function DisasterCards({
           </div>
 
           {/* Title + Type + Date */}
-          <div className="w-[50%] ">
-            <CardTitle className=" truncate md:text-base text-xs">
+          <div className="flex-1 min-w-0">
+            <CardTitle className="truncate text-xs md:text-base">
               {title}
             </CardTitle>
 

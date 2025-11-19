@@ -72,8 +72,9 @@ export default function SendReport() {
         {
           description: (
             <p className="overflow-hidden text-[10px] break-words whitespace-normal text-zinc-800">
-              We’ll automatically include your location when you submit a
-              report.
+              Please allow location access to continue and send the incident
+              report. Your location is required to ensure accurate reporting and
+              proper response.
             </p>
           ),
           duration: Infinity,

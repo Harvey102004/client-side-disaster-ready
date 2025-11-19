@@ -40,7 +40,11 @@ export default function SidebarMobile({ onClick }: { onClick?: () => void }) {
     },
     { link: "Prone Areas", path: "/prone-areas", icon: <IoWarning /> },
     { link: "About Us", path: "/about-us", icon: <FaCircleInfo /> },
-    { link: "Send Report", path: "/send-report", icon: <RiSendPlaneFill /> },
+    {
+      link: "Send incidents reports",
+      path: "/send-report",
+      icon: <RiSendPlaneFill />,
+    },
   ];
 
   return (

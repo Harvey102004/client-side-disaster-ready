@@ -81,6 +81,7 @@ export default function Home() {
     refetchOnMount: "always",
     refetchOnWindowFocus: true,
     staleTime: 0,
+    refetchInterval: 5000,
   });
 
   const { data: weatherDetails, isLoading: isWeatherDetailsLoading } = useQuery(

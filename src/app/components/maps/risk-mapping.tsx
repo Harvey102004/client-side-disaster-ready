@@ -77,7 +77,9 @@ export default function RiskMappingMap() {
 
   // Fetch markers only
   useEffect(() => {
-    (async () => {
+    let isMounted = true; // to avoid setting state if component unmounts
+
+    const fetchMarkers = async () => {
       try {
         const res = await fetch(
           "https://greenyellow-lion-623632.hostingersite.com/public/fetchDisasterMappingClient.php"
@@ -103,14 +105,23 @@ export default function RiskMappingMap() {
             })
           );
 
-          setMarkers(fetchedMarkers);
+          if (isMounted) setMarkers(fetchedMarkers);
         } else {
-          setMarkers([]);
+          if (isMounted) setMarkers([]);
         }
       } catch (err) {
         console.error("Error fetching markers:", err);
       }
-    })();
+    };
+
+    fetchMarkers(); // initial fetch
+
+    const interval = setInterval(fetchMarkers, 10000); // every 10 seconds
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval); // cleanup on unmount
+    };
   }, []);
 
   // Toggle filters
