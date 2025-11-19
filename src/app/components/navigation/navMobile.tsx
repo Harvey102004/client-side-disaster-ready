@@ -64,7 +64,7 @@ export default function NavMobile() {
     <div
       className={`fixed bottom-0 pb-3 z-45 block w-full pt-4 md:hidden ${isOnMapPage ? "bg-transparent" : "bg-background"}`}
     >
-      <nav className="bg-dark-blue relative mx-auto flex h-14 pr-1.5 w-[95%] items-center rounded-xl">
+      <nav className="bg-dark-blue relative mx-auto flex h-14 pr-2.5 w-[95%] items-center rounded-xl">
         {activeIndex !== null && activeIndex !== -1 && (
           <div
             className="bg-background absolute -top-3 flex h-[55px] w-[55px] items-center justify-center rounded-full transition-all duration-300 ease-in-out"

@@ -271,7 +271,7 @@ export default function DisasterCards({
       dark:border-gray-500/40 dark:bg-transparent"
     >
       <CardHeader>
-        <div className="flex gap-3">
+        <div className="flex gap-3 w-[90%]">
           {/* Image */}
           <div className="relative h-14 w-14 overflow-hidden rounded-md bg-transparent">
             <Image
