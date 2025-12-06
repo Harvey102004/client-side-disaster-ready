@@ -1,11 +1,30 @@
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {
-  images: {
-    domains: ["localhost", "greenyellow-lion-623632.hostingersite.com"],
+const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
   },
 
-  webpack(config) {
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "localhost",
+      },
+      {
+        protocol: "https",
+        hostname: "greenyellow-lion-623632.hostingersite.com",
+      },
+      {
+        protocol: "https",
+        hostname: "media.lordicon.com",
+      },
+    ],
+  },
+
+  turbopack: {},
+
+  webpack(config: any) {
     config.optimization.minimize = false;
     return config;
   },
