@@ -106,7 +106,7 @@ export default function SendReport() {
     reset,
   } = useForm({
     defaultValues: {
-      status: "",
+      status: null,
       lat: "",
       lng: "",
       name: "",
@@ -166,8 +166,6 @@ export default function SendReport() {
   const onSubmit = async (data: any) => {
     if (!photoFile) return errorToast("Please take a photo first.");
 
-    if (!data.status) return errorToast("Please select severity.");
-
     if (!data.phone || !data.description)
       return errorToast("Please fill in all required fields.");
 
@@ -194,7 +192,7 @@ export default function SendReport() {
       formData.append("reporter_name", data.name.trim());
       formData.append("reporter_contact", phoneNumber);
       formData.append("description", data.description.trim());
-      formData.append("severity", data.status);
+      formData.append("severity", "null");
       formData.append("lat", data.lat);
       formData.append("lng", data.lng);
       formData.append("media", photoFile);
@@ -363,49 +361,6 @@ export default function SendReport() {
                 {errors.phone && (
                   <p className="text-red-500 text-[10px] mt-1">
                     {String(errors.phone.message)}
-                  </p>
-                )}
-              </div>
-
-              {/* Severity */}
-              <div className="mt-8">
-                <label className="block text-xs mb-2">
-                  Incident Severity *
-                </label>
-                <Select
-                  onValueChange={(value) =>
-                    setValue("status", value, { shouldValidate: true })
-                  }
-                >
-                  <SelectTrigger className="w-full rounded-md border !bg-transparent !p-5 text-xs">
-                    <SelectValue placeholder="Select severity..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="critical">
-                      <div className="flex items-center gap-2 text-xs">
-                        <span className="h-2.5 w-2.5 rounded-full bg-red-500"></span>
-                        Critical
-                      </div>
-                    </SelectItem>
-
-                    <SelectItem value="moderate">
-                      <div className="flex items-center gap-2 text-xs">
-                        <span className="h-2.5 w-2.5 rounded-full bg-yellow-400"></span>
-                        Moderate
-                      </div>
-                    </SelectItem>
-
-                    <SelectItem value="minor">
-                      <div className="flex items-center gap-2 text-xs">
-                        <span className="h-2.5 w-2.5 rounded-full bg-green-500"></span>
-                        Minor
-                      </div>
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                {errors.status && (
-                  <p className="text-red-500 text-[10px] mt-1">
-                    Severity is required
                   </p>
                 )}
               </div>
